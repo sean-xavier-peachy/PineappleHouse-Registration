@@ -1,0 +1,519 @@
+{
+  "hero": {
+    "eyebrow": "Ducati Studios · Palm Springs",
+    "meta": [
+      "OCT 12-16, 2026",
+      "7 Suites",
+      "16 Creators",
+      "Chef on site",
+      "Closed Set"
+    ]
+  },
+  "intro": [
+    "Welcome! Everything you need to know before you commit and before you arrive is right here. Please read it all — the important dates and the testing window matter.",
+    "A fully gated, resort-style estate — a deep pool with fountains, spa, sauna, cold plunge, gym, chef's kitchen, and lush grounds. This is where we'll live and shoot for the week."
+  ],
+  "sections": [
+    {
+      "emoji": "🛏️",
+      "title": "Rooms & buy-in",
+      "intro": [
+        "Your spot is a per-head buy-in that covers your bed for the full run. Rates vary by room — pick your tier and reserve early, since rooms fill as they're confirmed."
+      ],
+      "groups": [],
+      "callouts": [],
+      "table": {
+        "header": [
+          "Room",
+          "Bed",
+          "Sleeps",
+          "Per-head buy-in"
+        ],
+        "rows": [
+          [
+            "Bedroom 1",
+            "King (Primary suite)",
+            "2",
+            "$900"
+          ],
+          [
+            "Bedroom 2",
+            "King",
+            "2",
+            "$825"
+          ],
+          [
+            "Bedroom 3",
+            "King",
+            "2",
+            "$825"
+          ],
+          [
+            "Bedroom 4",
+            "King",
+            "2",
+            "$825"
+          ],
+          [
+            "Bedroom 5",
+            "King",
+            "2",
+            "$825"
+          ],
+          [
+            "Bedroom 6",
+            "Full",
+            "4",
+            "$750"
+          ],
+          [
+            "Bedroom 7",
+            "Queen",
+            "2",
+            "$700"
+          ]
+        ]
+      }
+    },
+    {
+      "emoji": "✅",
+      "title": "What's included",
+      "intro": [],
+      "groups": [
+        {
+          "emoji": "",
+          "title": "The stay",
+          "items": [
+            {
+              "type": "line",
+              "html": "Shared bedroom for all 4 nights"
+            },
+            {
+              "type": "line",
+              "html": "A private chef on site cooking 3 meals a day — breakfast, lunch, and dinner"
+            },
+            {
+              "type": "line",
+              "html": "Full access to the estate: resort pool, spa, hot sauna, cold plunge, gym, and grounds"
+            }
+          ]
+        },
+        {
+          "emoji": "",
+          "title": "The shoot",
+          "items": [
+            {
+              "type": "line",
+              "html": "Participation in the collab shoots across the run"
+            },
+            {
+              "type": "line",
+              "html": "All raw video shared within 2 weeks of the house wrapping"
+            },
+            {
+              "type": "line",
+              "html": "Cross-promotion across the network"
+            }
+          ]
+        },
+        {
+          "emoji": "🎬",
+          "title": "Optional · studio work",
+          "items": [
+            {
+              "type": "toggle",
+              "html": "Falcon Studios on site Oct 13–15 — flag your interest to be considered",
+              "detail": [
+                "Falcon Studios will be on site shooting studio scenes Oct 13–15. If you'd like to be considered for studio work during the week, let us know when you sign up (and in the survey) and we'll connect interested performers with the studio team. Studio work is separate from the collab content and subject to the studio's own casting and paperwork."
+              ]
+            }
+          ]
+        }
+      ],
+      "callouts": [
+        {
+          "emoji": "✈️",
+          "html": "Not included: travel and transportation to and from Palm Springs is your responsibility (see Travel &amp; logistics)."
+        }
+      ],
+      "table": null
+    },
+    {
+      "emoji": "📋",
+      "title": "The essentials",
+      "intro": [],
+      "groups": [
+        {
+          "emoji": "📅",
+          "title": "Key dates",
+          "items": [
+            {
+              "type": "line",
+              "html": "Deposit (50%) — due to reserve your spot"
+            },
+            {
+              "type": "line",
+              "html": "Final payment (remaining 50%) — due Sept 14"
+            },
+            {
+              "type": "line",
+              "html": "Testing — your test must be dated within 12 days of arrival, i.e. Sept 30 or later"
+            },
+            {
+              "type": "line",
+              "html": "Arrive — Monday, Oct 12, 7–10pm PDT"
+            },
+            {
+              "type": "line",
+              "html": "Checkout — Friday, Oct 16"
+            },
+            {
+              "type": "line",
+              "html": "Falcon studio scenes on site — Oct 13–15"
+            }
+          ]
+        },
+        {
+          "emoji": "🧳",
+          "title": "Before arrival",
+          "items": [
+            {
+              "type": "toggle",
+              "html": "Pay your full balance — due Sept 14",
+              "detail": []
+            },
+            {
+              "type": "toggle",
+              "html": "Complete ID verification + 2257",
+              "detail": []
+            },
+            {
+              "type": "toggle",
+              "html": "Get tested — within 12 days of arrival",
+              "detail": [
+                "Your test must be dated within 12 days of arrival (Oct 12), i.e. Sept 30 or later. Get tested in time to receive your results and, if needed, get treated — we will ask for results. Ideally, test around Sept 30 – Oct 2 to leave a buffer for treatment."
+              ]
+            },
+            {
+              "type": "toggle",
+              "html": "Set up OnlyFans + JustForFans accounts",
+              "detail": [
+                "You'll need both, even if you don't actively use one. This lets us tag you in posts and avoid age-verification issues, so set these up before the house."
+              ]
+            },
+            {
+              "type": "toggle",
+              "html": "Complete the survey",
+              "detail": [
+                "You'll receive one from us before arrival; fill it out before you come."
+              ]
+            },
+            {
+              "type": "toggle",
+              "html": "Connect &amp; set up collabs",
+              "detail": [
+                "View the attendee list, check out everyone's work, reach out, and line up some collabs before you arrive."
+              ]
+            }
+          ]
+        },
+        {
+          "emoji": "🚗",
+          "title": "Travel & logistics",
+          "items": [
+            {
+              "type": "line",
+              "html": "Address — we'll send the home's address as soon as it's released from Airbnb, often not until the day before arrival"
+            },
+            {
+              "type": "line",
+              "html": "Airport — PSP (Palm Springs)"
+            },
+            {
+              "type": "line",
+              "html": "Arrival — Monday, Oct 12, 7–10pm PDT"
+            },
+            {
+              "type": "line",
+              "html": "Carpool — coordination happens after the guest list is finalized"
+            },
+            {
+              "type": "line",
+              "html": "Ducati does not cover transportation — travel to and from Palm Springs is on you"
+            }
+          ]
+        }
+      ],
+      "callouts": [],
+      "table": null
+    },
+    {
+      "emoji": "💸",
+      "title": "Money",
+      "intro": [],
+      "groups": [
+        {
+          "emoji": "",
+          "title": "Payment structure",
+          "items": [
+            {
+              "type": "line",
+              "html": "50% deposit to reserve your spot"
+            },
+            {
+              "type": "line",
+              "html": "Remaining 50% due Sept 14"
+            },
+            {
+              "type": "line",
+              "html": "No refund if the unpaid balance is missed"
+            }
+          ]
+        },
+        {
+          "emoji": "💳",
+          "title": "Payment methods",
+          "items": [
+            {
+              "type": "line",
+              "html": "Venmo: TBD"
+            },
+            {
+              "type": "line",
+              "html": "CashApp: TBD"
+            },
+            {
+              "type": "line",
+              "html": "PayPal: TBD"
+            },
+            {
+              "type": "line",
+              "html": "Zelle: TBD"
+            }
+          ]
+        },
+        {
+          "emoji": "🎯",
+          "title": "Referral discount",
+          "items": [
+            {
+              "type": "line",
+              "html": "$150 off per referred creator who books"
+            },
+            {
+              "type": "line",
+              "html": "Max 15 referral slots"
+            },
+            {
+              "type": "line",
+              "html": "Max discount = your total stay (referrals can offset your entire buy-in)"
+            }
+          ]
+        },
+        {
+          "emoji": "❌",
+          "title": "Cancellation policy",
+          "items": [
+            {
+              "type": "toggle",
+              "html": "50% refunded, as long as we have time to fill your spot",
+              "detail": [
+                "Life happens, and we completely understand if something comes up. If you need to cancel, we'll refund 50% of your payment as long as we have time to fill your spot. Keep in mind that if there are other cancellations, refunds are awarded in order of cancellation — for example, if two people canceled ahead of you, we'll need to fill three spots before your refund."
+              ]
+            }
+          ]
+        }
+      ],
+      "callouts": [],
+      "table": null
+    },
+    {
+      "emoji": "📏",
+      "title": "Rules",
+      "intro": [
+        "You may be asked to leave if rules are not respected."
+      ],
+      "groups": [
+        {
+          "emoji": "🚫",
+          "title": "Non-negotiables",
+          "items": [
+            {
+              "type": "line",
+              "html": "No drugs"
+            },
+            {
+              "type": "line",
+              "html": "No unapproved guests"
+            },
+            {
+              "type": "line",
+              "html": "No studio-exclusive models"
+            }
+          ]
+        },
+        {
+          "emoji": "⚠️",
+          "title": "Key policies",
+          "items": [
+            {
+              "type": "line",
+              "html": "No drinking 9am–8pm"
+            },
+            {
+              "type": "line",
+              "html": "Respect consent and boundaries — ask before you touch, hug, etc."
+            },
+            {
+              "type": "line",
+              "html": "No outsiders or studio exclusives at the house"
+            }
+          ]
+        },
+        {
+          "emoji": "🧠",
+          "title": "Expectations",
+          "items": [
+            {
+              "type": "line",
+              "html": "Be respectful of the space, especially noise levels"
+            },
+            {
+              "type": "line",
+              "html": "Clean up after yourself"
+            },
+            {
+              "type": "line",
+              "html": "Respect shared spaces"
+            },
+            {
+              "type": "line",
+              "html": "Pay for anything you damage"
+            }
+          ]
+        }
+      ],
+      "callouts": [],
+      "table": null
+    },
+    {
+      "emoji": "🎥",
+      "title": "Production & content",
+      "intro": [],
+      "groups": [
+        {
+          "emoji": "",
+          "title": "How production works",
+          "items": [
+            {
+              "type": "line",
+              "html": "Cinematographers and photographers post signup sheets for daily time slots"
+            },
+            {
+              "type": "line",
+              "html": "Sign up for a maximum of 1 scene per cinematographer per day (larger group scenes don't count toward this)"
+            },
+            {
+              "type": "line",
+              "html": "Want more? Additional scenes can be shot each day — just ask backup production members (we'll cover this in the house meeting)"
+            },
+            {
+              "type": "line",
+              "html": "If you're more than 10 minutes late to your shoot, your scene will be rescheduled"
+            }
+          ]
+        },
+        {
+          "emoji": "🎞️",
+          "title": "Post-production",
+          "items": [
+            {
+              "type": "line",
+              "html": "We provide all raw video within 2 weeks of the house wrapping"
+            },
+            {
+              "type": "line",
+              "html": "We wait 4–6 weeks after the house before posting, to give you time to post first"
+            },
+            {
+              "type": "line",
+              "html": "We may post BTS or Reels content earlier"
+            },
+            {
+              "type": "toggle",
+              "html": "✂️ A note on editing — please plan to do your own",
+              "detail": [
+                "We typically film 80+ collabs at each house — too much for our small team to edit in a short window. We are not responsible for editing; we're responsible for filming, organizing, and sharing all the files, plus cross-promotion. We'll eventually edit scenes and add them to the Dropbox folder, but since we don't edit until we're ready to post, that could be months out. Plan to do your own edits — and any edits you'd like to share back with us are greatly appreciated. We'll do the same."
+              ]
+            }
+          ]
+        }
+      ],
+      "callouts": [],
+      "table": null
+    },
+    {
+      "emoji": "🍍",
+      "title": "2026 Mx. Pineapple Palm Springs Takeover",
+      "intro": [
+        "Oct 9–11, 2026 — the weekend just before our house. Produced by Falcon | NakedSword, the Mx. Pineapple Palm Springs Takeover brings together adult entertainment, drag, and cabaret as a fundraiser for Pineapple Support — the free, 24/7 mental-health and therapy service for people working in the adult industry (over $100K raised to date). The weekend runs:"
+      ],
+      "groups": [
+        {
+          "title": "",
+          "emoji": "",
+          "items": [
+            {
+              "type": "line",
+              "html": "Fri 10/9 — VIP Pineapple Dinner"
+            },
+            {
+              "type": "line",
+              "html": "Sat 10/10 — Mx. Pineapple Cabaret: live vocals, drag, and surprises. 2026 talent includes Ana Foxx, Sister Roma, Ethylina Canne, headliner Brian Justin Crum (America's Got Talent / Broadway), Vanity Halston, Pippi Lovestocking, and more"
+            },
+            {
+              "type": "line",
+              "html": "Sun 10/11 — Pineapple Porn Disco &amp; Pool Party (new this year): a T-dance and pool party with a renowned DJ, gogos, and drag"
+            },
+            {
+              "type": "note",
+              "html": "It's a great way to support the community — proceeds go to pineapplesupport.org — and to enjoy a few extra days in Palm Springs before the house."
+            },
+            {
+              "type": "note",
+              "html": "We have 3 rooms available off-site for performers who'd like to come in early and take part. Want to add on the Pineapple weekend? Let us know and we'll share the details."
+            },
+            {
+              "type": "note",
+              "html": "Questions? Reach out anytime — we're glad you're here."
+            }
+          ]
+        }
+      ],
+      "callouts": [],
+      "table": null
+    }
+  ],
+  "tiers": [
+    {
+      "label": "Bedroom 1",
+      "price": "$900",
+      "bed": "King (Primary suite) · sleeps 2"
+    },
+    {
+      "label": "Bedrooms 2–5",
+      "price": "$825",
+      "bed": "King · sleeps 2 each"
+    },
+    {
+      "label": "Bedroom 6",
+      "price": "$750",
+      "bed": "Full · sleeps 4"
+    },
+    {
+      "label": "Bedroom 7",
+      "price": "$700",
+      "bed": "Queen · sleeps 2"
+    }
+  ]
+}

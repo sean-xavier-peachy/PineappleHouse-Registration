@@ -132,6 +132,17 @@
   .card ul{margin:0;padding:16px 18px 18px;list-style:none}
   .card li{position:relative;padding-left:20px;margin:9px 0;color:#cfd3e4;font-size:15px}
   .card li::before{content:"";position:absolute;left:0;top:9px;width:7px;height:7px;background:var(--magenta);border-radius:1px}
+  .cards.c2{grid-template-columns:repeat(2,1fr)}
+  .cards.c4{grid-template-columns:repeat(4,1fr)}
+  /* progressive disclosure — a Notion toggle becomes an expandable line */
+  .disc{margin:0}
+  .disc summary{cursor:pointer;list-style:none;display:flex;align-items:flex-start;gap:10px}
+  .disc summary::-webkit-details-marker{display:none}
+  .disc summary::after{content:"+";margin-left:auto;color:var(--cyan);font-weight:800;font-size:16px;line-height:1.2;flex:none}
+  .disc[open] summary::after{content:"\2212"}
+  .disc .dd{margin-top:9px;padding-right:18px;color:var(--muted);font-size:14px;line-height:1.6}
+  .disc .dd p{margin:0 0 8px}
+  .card li.has-disc::before{top:11px}
 
   /* ---------- ROSTER ---------- */
   .roster{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:26px 18px}
@@ -181,7 +192,7 @@
   @media(max-width:860px){
     .stats{grid-template-columns:1fr 1fr}
     .tiers{grid-template-columns:1fr 1fr}
-    .cards{grid-template-columns:1fr}
+    .cards,.cards.c2,.cards.c4{grid-template-columns:1fr}
     .pine .days{grid-template-columns:1fr}
   }
   @media(max-width:520px){
@@ -240,81 +251,9 @@
   </div>
 </header>
 
-<!-- ===================== ROOMS & BUY-IN ===================== -->
-<section id="rooms">
-  <div class="wrap">
-    <div class="sec-head"><span class="idx">01</span><h2>Rooms &amp; buy-in</h2></div>
-    <p class="note">Your spot is a per-head buy-in that covers your bed for the full run. Rates vary by room — reserve early, rooms fill as they're confirmed.</p>
-    <div class="tiers" style="margin-top:26px">
-      <div class="tier feat">
-        <img class="rm-shot" src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/e3851ea5-fc58-46bd-9d9a-605e536a1cce.jpeg?im_w=1200" alt="Primary bedroom with king bed" loading="lazy">
-        <div class="inner">
-          <div class="rooms">Bedroom 1 · Primary</div>
-          <div class="price">$900<small>/head</small></div>
-          <div class="bed">King suite · sleeps 2</div>
-        </div>
-      </div>
-      <div class="tier">
-        <img class="rm-shot" src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/b1c5c35f-522d-4c5b-9d74-735b6fe67e26.jpeg?im_w=1200" alt="King guest bedroom" loading="lazy">
-        <div class="inner">
-          <div class="rooms">Bedrooms 2–5</div>
-          <div class="price">$825<small>/head</small></div>
-          <div class="bed">King · sleeps 2 each</div>
-        </div>
-      </div>
-      <div class="tier">
-        <img class="rm-shot" src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/bdfea3fa-a97a-46a8-9540-e8cdd15d94d2.jpeg?im_w=1200" alt="Bunk room with full beds" loading="lazy">
-        <div class="inner">
-          <div class="rooms">Bedroom 6</div>
-          <div class="price">$750<small>/head</small></div>
-          <div class="bed">Full beds · sleeps 4</div>
-        </div>
-      </div>
-      <div class="tier">
-        <img class="rm-shot" src="https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/7616dac1-3cb0-4e23-87e0-d63b4750c0c2.jpeg?im_w=1200" alt="Queen guest bedroom" loading="lazy">
-        <div class="inner">
-          <div class="rooms">Bedroom 7</div>
-          <div class="price">$700<small>/head</small></div>
-          <div class="bed">Queen · sleeps 2</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- ===== 01/02 · rendered from Notion (build-content.mjs) ===== -->
+<div id="sec-pre"></div>
 
-<!-- ===================== WHAT'S INCLUDED ===================== -->
-<section id="included" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-head"><span class="idx">02</span><h2>What's included</h2></div>
-    <div class="cards">
-      <div class="card">
-        <div class="cap">The stay</div>
-        <ul>
-          <li>Your bed for all 4 nights</li>
-          <li>Private chef — breakfast, lunch &amp; dinner daily</li>
-          <li>Pool, spa, sauna, cold plunge &amp; gym</li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="cap">The shoot</div>
-        <ul>
-          <li>Participation in the collab shoots all week</li>
-          <li>Raw footage shared within 2 weeks of wrap</li>
-          <li>Cross-promotion across the network</li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="cap p">Optional · studio</div>
-        <ul>
-          <li>Falcon Studios on site Oct 13–15</li>
-          <li>Get considered for studio scenes</li>
-          <li>Flag your interest when you sign up</li>
-        </ul>
-      </div>
-    </div>
-    <p class="note" style="margin-top:16px"><span class="lead-in">Not included</span> &nbsp;Travel and transportation to and from Palm Springs is your responsibility.</p>
-  </div>
-</section>
 
 <!-- ===================== WHO'S IN THE HOUSE ===================== -->
 <section id="roster">
@@ -325,38 +264,9 @@
   </div>
 </section>
 
-<!-- ===================== ESSENTIALS ===================== -->
-<section id="essentials" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-head"><span class="idx">04</span><h2>The essentials</h2></div>
-    <div class="cards">
-      <div class="card">
-        <div class="cap">Key dates</div>
-        <ul>
-          <li>Final payment due Sept 14</li>
-          <li>Test dated within 12 days of arrival (Sept 30+)</li>
-          <li>Arrive Mon Oct 12, 7–10pm PDT · out Fri Oct 16</li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="cap">Before you come</div>
-        <ul>
-          <li>ID verification + 2257</li>
-          <li>OnlyFans &amp; JustForFans accounts set up</li>
-          <li>Complete the survey · line up collabs</li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="cap p">House rules</div>
-        <ul>
-          <li>No drugs · no unapproved guests</li>
-          <li>Respect consent — ask first, always</li>
-          <li>Respect the space, the crew &amp; each other</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- ===== 04-07 · rendered from Notion ===== -->
+<div id="sec-post"></div>
+
 
 <!-- ===================== CTA ===================== -->
 <section id="claim">
@@ -370,21 +280,8 @@
   </div>
 </section>
 
-<!-- ===================== PINEAPPLE ===================== -->
-<section id="pineapple" style="padding-top:0">
-  <div class="wrap">
-    <div class="pine">
-      <p class="eyebrow">Right before the house · Oct 9–11</p>
-      <h2 style="font-size:clamp(28px,5vw,52px);font-style:italic">🍍 Mx. Pineapple Palm Springs Takeover</h2>
-      <p class="note" style="margin-top:14px">Produced by Falcon | NakedSword — a weekend of cabaret, drag &amp; adult entertainment benefiting <b style="color:var(--ink)">Pineapple Support</b> (over $100K raised for adult-industry mental health). We have <b style="color:var(--ink)">3 off-site rooms</b> for creators who want to come in early and take part.</p>
-      <div class="days">
-        <div class="day"><div class="d">Fri 10/9</div><div class="t">VIP Pineapple Dinner</div></div>
-        <div class="day"><div class="d">Sat 10/10</div><div class="t">Mx. Pineapple Cabaret</div><div class="x">Live vocals, drag &amp; surprises</div></div>
-        <div class="day"><div class="d">Sun 10/11</div><div class="t">Pineapple Porn Disco &amp; Pool Party</div><div class="x">New this year — DJ, gogos, drag</div></div>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- ===== 08 · rendered from Notion ===== -->
+<div id="sec-tail"></div>
 
 <!-- ===================== FOOTER ===================== -->
 <footer>
@@ -476,6 +373,72 @@
     document.getElementById("car-next").addEventListener("click",()=>go(cur+1));
     paint();
   })();
+
+  // ---- sections rendered from Notion (content.json) ----
+  // Photography stays curated here; Notion owns the copy.
+  const TIER_SHOTS=[
+    "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/e3851ea5-fc58-46bd-9d9a-605e536a1cce.jpeg?im_w=1200",
+    "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/b1c5c35f-522d-4c5b-9d74-735b6fe67e26.jpeg?im_w=1200",
+    "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/bdfea3fa-a97a-46a8-9540-e8cdd15d94d2.jpeg?im_w=1200",
+    "https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/7616dac1-3cb0-4e23-87e0-d63b4750c0c2.jpeg?im_w=1200"
+  ];
+  const CAP_ALT=["", "p"]; // alternate cyan / purple card caps
+
+  function itemHTML(it){
+    if(it.type==="note") return `<li class="note-li">${it.html}</li>`;
+    if(it.type==="toggle" && it.detail && it.detail.length)
+      return `<li class="has-disc"><details class="disc"><summary>${it.html}</summary>`+
+             `<div class="dd">${it.detail.map(d=>`<p>${d}</p>`).join("")}</div></details></li>`;
+    return `<li>${it.html}</li>`;
+  }
+  function groupHTML(g,i){
+    const cap = (g.emoji?g.emoji+" ":"")+(g.title||"Details");
+    return `<div class="card"><div class="cap ${CAP_ALT[i%2]}">${cap}</div>`+
+           `<ul>${g.items.map(itemHTML).join("")}</ul></div>`;
+  }
+  function tiersHTML(tiers){
+    return `<div class="tiers" style="margin-top:26px">`+tiers.map((t,i)=>
+      `<div class="tier${i===0?" feat":""}">`+
+      (TIER_SHOTS[i]?`<img class="rm-shot" src="${TIER_SHOTS[i]}" alt="${t.label}" loading="lazy">`:"")+
+      `<div class="inner"><div class="rooms">${t.label}</div>`+
+      `<div class="price">${t.price}<small>/head</small></div>`+
+      `<div class="bed">${t.bed}</div></div></div>`).join("")+`</div>`;
+  }
+  function sectionHTML(s,idx,tiers){
+    const n=String(idx).padStart(2,"0");
+    let inner=`<div class="sec-head"><span class="idx">${n}</span><h2>${s.title}</h2></div>`;
+    inner+=s.intro.map(t=>`<p class="note">${t}</p>`).join("");
+    if(tiers) inner+=tiersHTML(tiers);
+    if(s.groups.length){
+      const cls=s.groups.length===2?" c2":s.groups.length===4?" c4":"";
+      inner+=`<div class="cards${cls}" style="margin-top:26px">`+s.groups.map(groupHTML).join("")+`</div>`;
+    }
+    inner+=s.callouts.map(c=>`<p class="note" style="margin-top:16px">`+
+      `<span class="lead-in">${c.emoji||"Note"}</span> &nbsp;${c.html}</p>`).join("");
+    return `<section id="sec-${idx}" style="padding-top:0"><div class="wrap">${inner}</div></section>`;
+  }
+
+  fetch("content.json",{cache:"no-store"})
+    .then(r=>r.ok?r.json():Promise.reject())
+    .then(d=>{
+      const secs=d.sections||[];
+      if(!secs.length) return;
+      const pre=document.getElementById("sec-pre"),
+            post=document.getElementById("sec-post"),
+            tail=document.getElementById("sec-tail");
+      // 01-02 before the roster, 04-07 after it, the last section after the CTA
+      const head=secs.slice(0,2), mid=secs.slice(2,-1), last=secs[secs.length-1];
+      let n=0;
+      pre.innerHTML  = head.map(s=>sectionHTML(s,++n,s.table?d.tiers:null)).join("");
+      n++; // 03 is the roster, which is static markup
+      post.innerHTML = mid.map(s=>sectionHTML(s,++n,null)).join("");
+      tail.innerHTML = sectionHTML(last,++n,null);
+      // hero copy follows Notion too
+      if(d.hero?.eyebrow) document.querySelector(".eyebrow").textContent=d.hero.eyebrow;
+      if(d.hero?.meta?.length) document.querySelector(".sub").innerHTML=
+        d.hero.meta.map((m,i)=>(i===0||i===d.hero.meta.length-1)?`<b>${m}</b>`:m).join(" · ");
+    })
+    .catch(()=>{ /* content.json absent — sections stay empty, rest of page works */ });
 
   // wire the CTA to the interest form
   const cta = document.getElementById("interest-cta");
