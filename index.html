@@ -69,13 +69,29 @@
   .xmark{width:clamp(52px,9vw,92px);flex:none;filter:drop-shadow(0 0 18px rgba(162,77,255,.45))}
 
   /* ---------- PHOTO GRID ---------- */
-  .grid-photos{
-    display:grid;gap:12px;margin-top:clamp(24px,4vw,40px);
-    grid-template-columns:repeat(2,1fr);
-  }
-  .shot{position:relative;border-radius:14px;overflow:hidden;background:var(--card);
-    aspect-ratio:16/10;border:1px solid var(--line)}
-  .shot img{width:100%;height:100%;object-fit:cover}
+  /* ---------- HOUSE CAROUSEL ---------- */
+  .carousel{position:relative;margin-top:clamp(24px,4vw,40px)}
+  .car-track{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;
+    scroll-behavior:smooth;border-radius:14px;scrollbar-width:none;-ms-overflow-style:none}
+  .car-track::-webkit-scrollbar{display:none}
+  .car-slide{flex:0 0 100%;scroll-snap-align:center;margin:0;position:relative;
+    aspect-ratio:16/9;border-radius:14px;overflow:hidden;
+    border:1px solid var(--line);background:var(--card)}
+  .car-slide img{width:100%;height:100%;object-fit:cover;display:block}
+  .car-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;
+    width:42px;height:42px;border-radius:50%;cursor:pointer;
+    background:rgba(6,8,14,.72);border:1px solid rgba(255,255,255,.16);color:var(--ink);
+    font-size:22px;line-height:1;display:grid;place-items:center;backdrop-filter:blur(6px);
+    transition:background .18s,border-color .18s}
+  .car-nav:hover{background:rgba(6,8,14,.94);border-color:var(--cyan)}
+  .car-nav.prev{left:12px}
+  .car-nav.next{right:12px}
+  .car-dots{display:flex;justify-content:center;gap:8px;margin-top:14px}
+  .car-dots button{width:7px;height:7px;padding:0;border:0;border-radius:50%;
+    background:var(--line);cursor:pointer;transition:width .18s,background .18s}
+  .car-dots button[aria-current="true"]{width:22px;border-radius:999px;
+    background:linear-gradient(90deg,var(--cyan),var(--purple))}
+  @media(max-width:520px){.car-nav{width:34px;height:34px;font-size:18px}}
   .tag{
     position:absolute;z-index:2;bottom:12px;left:12px;display:inline-flex;align-items:center;gap:7px;
     background:rgba(6,8,14,.78);border:1px solid rgba(255,255,255,.12);
@@ -163,14 +179,12 @@
 
   /* ---------- RESPONSIVE ---------- */
   @media(max-width:860px){
-    .grid-photos{grid-template-columns:1fr 1fr}
     .stats{grid-template-columns:1fr 1fr}
     .tiers{grid-template-columns:1fr 1fr}
     .cards{grid-template-columns:1fr}
     .pine .days{grid-template-columns:1fr}
   }
   @media(max-width:520px){
-    .grid-photos{grid-template-columns:1fr}
     .tiers{grid-template-columns:1fr}
   }
   a:focus-visible,.btn:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:6px}
@@ -197,12 +211,23 @@
       </svg>
     </div>
 
-    <!-- house photo grid -->
-    <div class="grid-photos">
-      <figure class="shot"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/f13ff075-6d2b-40a8-b86b-0c82f01dde16.jpeg?im_w=1200" alt="Resort pool and deck at dusk"></figure>
-      <figure class="shot"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/912ee8ac-8456-494d-af61-e02c11b18b7e.jpeg?im_w=1200" alt="Open living space with sectional seating and a linear fireplace"></figure>
-      <figure class="shot"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/620fbdd6-9709-433e-b682-5aace1605169.jpeg?im_w=1200" alt="Covered patio lounge looking out to the pool and palms"></figure>
-      <figure class="shot"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/2e7ae09a-f18b-4308-8e60-c3ff8a2324a5.jpeg?im_w=1200" alt="Private gym with cardio and weight equipment"></figure>
+    <!-- house photo carousel -->
+    <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Photos of the house">
+      <div class="car-track" id="car-track">
+        <figure class="car-slide"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/f13ff075-6d2b-40a8-b86b-0c82f01dde16.jpeg?im_w=1200" srcset="https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/f13ff075-6d2b-40a8-b86b-0c82f01dde16.jpeg?im_w=720 720w, https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/f13ff075-6d2b-40a8-b86b-0c82f01dde16.jpeg?im_w=960 960w, https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/f13ff075-6d2b-40a8-b86b-0c82f01dde16.jpeg?im_w=1200 1200w, https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/f13ff075-6d2b-40a8-b86b-0c82f01dde16.jpeg?im_w=1440 1440w" sizes="(max-width:1200px) 100vw, 1180px" alt="Resort pool and deck lit at dusk with fire pit and palms" loading="eager" decoding="async"></figure>
+        <figure class="car-slide"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/47173d66-bae9-4e06-b4d6-a87d50b19413.jpeg?im_w=1200" srcset="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/47173d66-bae9-4e06-b4d6-a87d50b19413.jpeg?im_w=720 720w, https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/47173d66-bae9-4e06-b4d6-a87d50b19413.jpeg?im_w=960 960w, https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/47173d66-bae9-4e06-b4d6-a87d50b19413.jpeg?im_w=1200 1200w, https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/47173d66-bae9-4e06-b4d6-a87d50b19413.jpeg?im_w=1440 1440w" sizes="(max-width:1200px) 100vw, 1180px" alt="The pool and sun deck by day, ringed by palms" loading="lazy" decoding="async"></figure>
+        <figure class="car-slide"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/5fb27ffa-4fe0-4c3a-a15d-dd80bbbb3aa7.jpeg?im_w=1200" srcset="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/5fb27ffa-4fe0-4c3a-a15d-dd80bbbb3aa7.jpeg?im_w=720 720w, https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/5fb27ffa-4fe0-4c3a-a15d-dd80bbbb3aa7.jpeg?im_w=960 960w, https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/5fb27ffa-4fe0-4c3a-a15d-dd80bbbb3aa7.jpeg?im_w=1200 1200w, https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/5fb27ffa-4fe0-4c3a-a15d-dd80bbbb3aa7.jpeg?im_w=1440 1440w" sizes="(max-width:1200px) 100vw, 1180px" alt="The pool lit blue at night, seen from above" loading="lazy" decoding="async"></figure>
+        <figure class="car-slide"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/620fbdd6-9709-433e-b682-5aace1605169.jpeg?im_w=1200" srcset="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/620fbdd6-9709-433e-b682-5aace1605169.jpeg?im_w=720 720w, https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/620fbdd6-9709-433e-b682-5aace1605169.jpeg?im_w=960 960w, https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/620fbdd6-9709-433e-b682-5aace1605169.jpeg?im_w=1200 1200w, https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/620fbdd6-9709-433e-b682-5aace1605169.jpeg?im_w=1440 1440w" sizes="(max-width:1200px) 100vw, 1180px" alt="Covered patio lounge looking out to the pool" loading="lazy" decoding="async"></figure>
+        <figure class="car-slide"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/29c69650-a7cf-463e-a125-47af47cf17e3.jpeg?im_w=1200" srcset="https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/29c69650-a7cf-463e-a125-47af47cf17e3.jpeg?im_w=720 720w, https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/29c69650-a7cf-463e-a125-47af47cf17e3.jpeg?im_w=960 960w, https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/29c69650-a7cf-463e-a125-47af47cf17e3.jpeg?im_w=1200 1200w, https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/29c69650-a7cf-463e-a125-47af47cf17e3.jpeg?im_w=1440 1440w" sizes="(max-width:1200px) 100vw, 1180px" alt="Lawn and grounds with stepping stones and mature palms" loading="lazy" decoding="async"></figure>
+        <figure class="car-slide"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/912ee8ac-8456-494d-af61-e02c11b18b7e.jpeg?im_w=1200" srcset="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/912ee8ac-8456-494d-af61-e02c11b18b7e.jpeg?im_w=720 720w, https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/912ee8ac-8456-494d-af61-e02c11b18b7e.jpeg?im_w=960 960w, https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/912ee8ac-8456-494d-af61-e02c11b18b7e.jpeg?im_w=1200 1200w, https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/912ee8ac-8456-494d-af61-e02c11b18b7e.jpeg?im_w=1440 1440w" sizes="(max-width:1200px) 100vw, 1180px" alt="Open living room with sectional seating and a linear fireplace" loading="lazy" decoding="async"></figure>
+        <figure class="car-slide"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/e1c22ceb-e35e-4954-ad79-b26409f60767.jpeg?im_w=1200" srcset="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/e1c22ceb-e35e-4954-ad79-b26409f60767.jpeg?im_w=720 720w, https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/e1c22ceb-e35e-4954-ad79-b26409f60767.jpeg?im_w=960 960w, https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/e1c22ceb-e35e-4954-ad79-b26409f60767.jpeg?im_w=1200 1200w, https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/e1c22ceb-e35e-4954-ad79-b26409f60767.jpeg?im_w=1440 1440w" sizes="(max-width:1200px) 100vw, 1180px" alt="Lounge with leather sofas opening onto the pool" loading="lazy" decoding="async"></figure>
+        <figure class="car-slide"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/82bb0699-255f-4a03-833f-89e91dd84a1e.jpeg?im_w=1200" srcset="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/82bb0699-255f-4a03-833f-89e91dd84a1e.jpeg?im_w=720 720w, https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/82bb0699-255f-4a03-833f-89e91dd84a1e.jpeg?im_w=960 960w, https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/82bb0699-255f-4a03-833f-89e91dd84a1e.jpeg?im_w=1200 1200w, https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/82bb0699-255f-4a03-833f-89e91dd84a1e.jpeg?im_w=1440 1440w" sizes="(max-width:1200px) 100vw, 1180px" alt="Primary suite with king bed and direct pool access" loading="lazy" decoding="async"></figure>
+        <figure class="car-slide"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/b1c5c35f-522d-4c5b-9d74-735b6fe67e26.jpeg?im_w=1200" srcset="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/b1c5c35f-522d-4c5b-9d74-735b6fe67e26.jpeg?im_w=720 720w, https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/b1c5c35f-522d-4c5b-9d74-735b6fe67e26.jpeg?im_w=960 960w, https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/b1c5c35f-522d-4c5b-9d74-735b6fe67e26.jpeg?im_w=1200 1200w, https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/b1c5c35f-522d-4c5b-9d74-735b6fe67e26.jpeg?im_w=1440 1440w" sizes="(max-width:1200px) 100vw, 1180px" alt="Guest bedroom with slatted feature wall" loading="lazy" decoding="async"></figure>
+        <figure class="car-slide"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/2e7ae09a-f18b-4308-8e60-c3ff8a2324a5.jpeg?im_w=1200" srcset="https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/2e7ae09a-f18b-4308-8e60-c3ff8a2324a5.jpeg?im_w=720 720w, https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/2e7ae09a-f18b-4308-8e60-c3ff8a2324a5.jpeg?im_w=960 960w, https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/2e7ae09a-f18b-4308-8e60-c3ff8a2324a5.jpeg?im_w=1200 1200w, https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/2e7ae09a-f18b-4308-8e60-c3ff8a2324a5.jpeg?im_w=1440 1440w" sizes="(max-width:1200px) 100vw, 1180px" alt="Private gym with cardio and weight equipment" loading="lazy" decoding="async"></figure>
+      </div>
+      <button class="car-nav prev" id="car-prev" type="button" aria-label="Previous photo">&#8249;</button>
+      <button class="car-nav next" id="car-next" type="button" aria-label="Next photo">&#8250;</button>
+      <div class="car-dots" id="car-dots"></div>
     </div>
 
     <!-- stat strip -->
@@ -420,6 +445,37 @@
     .then(r=>r.ok?r.json():Promise.reject())
     .then(d=>renderRoster(Array.isArray(d)?d:(d.roster||[])))
     .catch(()=>renderRoster(SAMPLE_ROSTER));
+
+  // ---- house carousel ----
+  (function(){
+    const track=document.getElementById("car-track");
+    if(!track) return;
+    const slides=[...track.children], dots=document.getElementById("car-dots");
+    const step=()=>track.clientWidth+12;
+    // Track the target index rather than reading scrollLeft: mid-animation reads
+    // make rapid arrow clicks land on the same slide twice.
+    let cur=0;
+    function paint(){[...dots.children].forEach((d,i)=>d.setAttribute("aria-current",i===cur?"true":"false"));}
+    function go(i){
+      cur=Math.max(0,Math.min(slides.length-1,i));
+      track.scrollTo({left:cur*step(),behavior:"smooth"});
+      paint();
+    }
+    slides.forEach((_,i)=>{
+      const b=document.createElement("button");
+      b.type="button"; b.setAttribute("aria-label","Go to photo "+(i+1));
+      b.addEventListener("click",()=>go(i)); dots.appendChild(b);
+    });
+    // Swipe / trackpad scrolling is the source of truth once it settles.
+    let t; track.addEventListener("scroll",()=>{
+      clearTimeout(t);
+      t=setTimeout(()=>{cur=Math.round(track.scrollLeft/step());paint();},90);
+    });
+    addEventListener("resize",()=>{clearTimeout(t);t=setTimeout(()=>go(cur),120);});
+    document.getElementById("car-prev").addEventListener("click",()=>go(cur-1));
+    document.getElementById("car-next").addEventListener("click",()=>go(cur+1));
+    paint();
+  })();
 
   // wire the CTA to the interest form
   const cta = document.getElementById("interest-cta");
