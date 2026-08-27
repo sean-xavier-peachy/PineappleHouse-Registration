@@ -71,13 +71,11 @@
   /* ---------- PHOTO GRID ---------- */
   .grid-photos{
     display:grid;gap:12px;margin-top:clamp(24px,4vw,40px);
-    grid-template-columns:1.4fr 1fr 1fr;
+    grid-template-columns:repeat(2,1fr);
   }
   .shot{position:relative;border-radius:14px;overflow:hidden;background:var(--card);
     aspect-ratio:16/10;border:1px solid var(--line)}
-  .shot:first-child{grid-row:span 1}
   .shot img{width:100%;height:100%;object-fit:cover}
-  .shot::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(4,5,10,.75))}
   .tag{
     position:absolute;z-index:2;bottom:12px;left:12px;display:inline-flex;align-items:center;gap:7px;
     background:rgba(6,8,14,.78);border:1px solid rgba(255,255,255,.12);
@@ -100,7 +98,10 @@
 
   /* ---------- TIER CARDS ---------- */
   .tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-  .tier{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 20px}
+  .tier{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 22px;display:flex;flex-direction:column}
+  .tier .rm-shot{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;
+    border:1px solid var(--line);margin-bottom:16px;background:var(--bg)}
+  .tier .inner{padding:0 6px}
   .tier.feat{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan),0 0 34px rgba(38,228,242,.12)}
   .tier .rooms{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700}
   .tier .price{font-family:"Saira Condensed";font-weight:800;font-size:44px;line-height:1;margin:10px 0 4px}
@@ -198,9 +199,10 @@
 
     <!-- house photo grid -->
     <div class="grid-photos">
-      <figure class="shot"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/f13ff075-6d2b-40a8-b86b-0c82f01dde16.jpeg?im_w=1200" alt="Resort pool and deck at dusk"><figcaption class="tag">Pool &amp; Deck</figcaption></figure>
-      <figure class="shot"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/82bb0699-255f-4a03-833f-89e91dd84a1e.jpeg?im_w=1200" alt="Primary suite"><figcaption class="tag">Primary Suite</figcaption></figure>
-      <figure class="shot"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/0563066d-5ee0-4f52-9270-3fe9dab7c72a.jpeg?im_w=1200" alt="Outdoor kitchen and grounds"><figcaption class="tag">Outdoor Kitchen</figcaption></figure>
+      <figure class="shot"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/f13ff075-6d2b-40a8-b86b-0c82f01dde16.jpeg?im_w=1200" alt="Resort pool and deck at dusk"></figure>
+      <figure class="shot"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/912ee8ac-8456-494d-af61-e02c11b18b7e.jpeg?im_w=1200" alt="Open living space with sectional seating and a linear fireplace"></figure>
+      <figure class="shot"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/620fbdd6-9709-433e-b682-5aace1605169.jpeg?im_w=1200" alt="Covered patio lounge looking out to the pool and palms"></figure>
+      <figure class="shot"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/2e7ae09a-f18b-4308-8e60-c3ff8a2324a5.jpeg?im_w=1200" alt="Private gym with cardio and weight equipment"></figure>
     </div>
 
     <!-- stat strip -->
@@ -220,24 +222,36 @@
     <p class="note">Your spot is a per-head buy-in that covers your bed for the full run. Rates vary by room — reserve early, rooms fill as they're confirmed.</p>
     <div class="tiers" style="margin-top:26px">
       <div class="tier feat">
-        <div class="rooms">Bedroom 1 · Primary</div>
-        <div class="price">$900<small>/head</small></div>
-        <div class="bed">King suite · sleeps 2</div>
+        <img class="rm-shot" src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/e3851ea5-fc58-46bd-9d9a-605e536a1cce.jpeg?im_w=1200" alt="Primary bedroom with king bed" loading="lazy">
+        <div class="inner">
+          <div class="rooms">Bedroom 1 · Primary</div>
+          <div class="price">$900<small>/head</small></div>
+          <div class="bed">King suite · sleeps 2</div>
+        </div>
       </div>
       <div class="tier">
-        <div class="rooms">Bedrooms 2–5</div>
-        <div class="price">$825<small>/head</small></div>
-        <div class="bed">King · sleeps 2 each</div>
+        <img class="rm-shot" src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/b1c5c35f-522d-4c5b-9d74-735b6fe67e26.jpeg?im_w=1200" alt="King guest bedroom" loading="lazy">
+        <div class="inner">
+          <div class="rooms">Bedrooms 2–5</div>
+          <div class="price">$825<small>/head</small></div>
+          <div class="bed">King · sleeps 2 each</div>
+        </div>
       </div>
       <div class="tier">
-        <div class="rooms">Bedroom 6</div>
-        <div class="price">$750<small>/head</small></div>
-        <div class="bed">Full beds · sleeps 4</div>
+        <img class="rm-shot" src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/bdfea3fa-a97a-46a8-9540-e8cdd15d94d2.jpeg?im_w=1200" alt="Bunk room with full beds" loading="lazy">
+        <div class="inner">
+          <div class="rooms">Bedroom 6</div>
+          <div class="price">$750<small>/head</small></div>
+          <div class="bed">Full beds · sleeps 4</div>
+        </div>
       </div>
       <div class="tier">
-        <div class="rooms">Bedroom 7</div>
-        <div class="price">$700<small>/head</small></div>
-        <div class="bed">Queen · sleeps 2</div>
+        <img class="rm-shot" src="https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/7616dac1-3cb0-4e23-87e0-d63b4750c0c2.jpeg?im_w=1200" alt="Queen guest bedroom" loading="lazy">
+        <div class="inner">
+          <div class="rooms">Bedroom 7</div>
+          <div class="price">$700<small>/head</small></div>
+          <div class="bed">Queen · sleeps 2</div>
+        </div>
       </div>
     </div>
   </div>
