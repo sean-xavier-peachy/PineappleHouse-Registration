@@ -315,7 +315,7 @@
     { name:"Sean Xavier", headshot:"",                                 ig:"https://instagram.com/", x:"https://x.com/", of:"https://onlyfans.com/", jff:"https://justfor.fans/" },
     { name:"Curved King", headshot:"https://i.pravatar.cc/320?img=15", ig:"",                       x:"", of:"https://onlyfans.com/", jff:"https://justfor.fans/" },
   ];
-  const SHOW_TBD_SLOTS = 5; // ghost "spot open" tiles after the confirmed roster
+  const HOUSE_CAPACITY = 16; // beds in the house — ghost "spot open" tiles fill the gap
 
   function initials(n){return (n||"?").split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase();}
   function socLink(label,url){return url?`<a href="${url}" target="_blank" rel="noopener">${label}</a>`:"";}
@@ -331,7 +331,8 @@
           <div class="nm">${m.name}</div>
           ${soc?`<div class="soc">${soc}</div>`:""}</div>`);
     });
-    for(let i=0;i<SHOW_TBD_SLOTS;i++){
+    const open = Math.max(0, HOUSE_CAPACITY - list.length);
+    for(let i=0;i<open;i++){
       grid.insertAdjacentHTML("beforeend",
         `<div class="who tbd"><div class="avatar"><span>+</span></div><div class="nm">Spot open</div><div class="fo">Reserve now</div></div>`);
     }

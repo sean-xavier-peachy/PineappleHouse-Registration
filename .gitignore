@@ -16,3 +16,7 @@ npm-debug.log*
 
 # Local-only handoff doc (contains Airtable base ID + Notion DB IDs)
 BUILD-NOTES.md
+
+# Build outputs — regenerated from Notion by the publish workflow
+roster.json
+assets/headshots/
