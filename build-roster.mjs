@@ -6,19 +6,39 @@
  * on the next build. Headshots are downloaded locally (Airtable attachment
  * URLs expire), so the deployed images never break.
  *
- * Run:  AIRTABLE_TOKEN=pat... node build-roster.mjs
+ * Setup: cp .env.example .env   then paste your token into .env (gitignored).
+ * Run:   node build-roster.mjs
  * Then commit roster.json + assets/headshots/ and deploy (GitHub Pages).
  *
  * Requires Node 18+ (global fetch).  No dependencies.
  */
 import { writeFile, mkdir } from "node:fs/promises";
+import { readFileSync, existsSync } from "node:fs";
+
+// ---------------------------------------------------------------------------
+// Local secrets. `.env` sits next to this script, is gitignored, and never
+// leaves the machine. Anything already in the real environment wins, so CI
+// (e.g. a GitHub Actions secret) can inject the token without a .env present.
+// ---------------------------------------------------------------------------
+function loadEnv(file = new URL(".env", import.meta.url)) {
+  if (!existsSync(file)) return;
+  for (const line of readFileSync(file, "utf8").split(/\r?\n/)) {
+    const m = line.match(/^\s*(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)$/);
+    if (!m) continue;                                    // blank line or # comment
+    let v = m[2].trim();
+    if (/^".*"$/.test(v) || /^'.*'$/.test(v)) v = v.slice(1, -1);
+    else v = v.replace(/\s+#.*$/, "").trim();            // strip trailing comment
+    if (!(m[1] in process.env)) process.env[m[1]] = v;   // never override real env
+  }
+}
+loadEnv();
 
 // ---------------------------------------------------------------------------
 // Config — override via env vars.
 // ---------------------------------------------------------------------------
-const TOKEN   = process.env.AIRTABLE_TOKEN;                 // a NEW, read-only PAT (rotate the exposed one!)
-const BASE_ID = process.env.BASE_ID || "appOVIIrtTP2JV7v8"; // the ballot base
-const TABLE   = process.env.TABLE   || "Performers";
+const TOKEN   = process.env.AIRTABLE_TOKEN;   // a NEW, read-only PAT (rotate the exposed one!)
+const BASE_ID = process.env.BASE_ID;          // the ballot base — kept out of source, see .env
+const TABLE   = process.env.TABLE || "Performers";
 // Only include performers actually in the house. Point this at whatever field
 // you use to mark that — e.g. a "House status" single-select = "Booked", or a
 // checkbox. Default below reads a checkbox field named "In House".
@@ -27,7 +47,12 @@ const BOOKED_FORMULA = process.env.BOOKED_FORMULA || "{In House}";
 const OUT_JSON = "roster.json";
 const IMG_DIR  = "assets/headshots";
 
-if (!TOKEN) { console.error("Set AIRTABLE_TOKEN (use a fresh, read-scoped token)."); process.exit(1); }
+const missing = [!TOKEN && "AIRTABLE_TOKEN", !BASE_ID && "BASE_ID"].filter(Boolean);
+if (missing.length) {
+  console.error(`Missing ${missing.join(" and ")}.`);
+  console.error("Copy .env.example to .env and fill it in (use a fresh, read-scoped token).");
+  process.exit(1);
+}
 
 const HDR = { Authorization: `Bearer ${TOKEN}` };
 const api = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(TABLE)}`;
