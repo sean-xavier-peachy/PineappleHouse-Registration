@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Pineapple House · Ducati Studios · Palm Springs</title>
+<meta name="description" content="Ducati X Collab House — Palm Springs, Oct 12–16, 2026. Private resort estate, chef on site, five studio brands. See who's coming and claim your spot.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:ital,wght@0,500;0,600;0,700;0,800;1,700;1,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     DESIGN TOKENS  — derived from the Ducati X leave-behind
+     ============================================================ */
+  :root{
+    --bg:#07080e;
+    --bg-2:#0c0e17;
+    --card:#0e1120;
+    --line:#20243a;
+    --ink:#f5f7fc;
+    --muted:#8b91a8;
+    --muted-2:#5f6480;
+    --cyan:#26e4f2;
+    --purple:#a24dff;
+    --magenta:#ff2e78;
+    --grad:linear-gradient(120deg,var(--cyan),var(--purple));
+    --maxw:1120px;
+    --pad:clamp(20px,5vw,64px);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Inter",system-ui,sans-serif;font-size:16px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  /* ambient corner glows */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(60vw 50vh at 88% -8%, rgba(162,77,255,.20), transparent 60%),
+      radial-gradient(55vw 45vh at 4% 108%, rgba(38,228,242,.12), transparent 60%);
+  }
+  h1,h2,h3,.display{
+    font-family:"Saira Condensed",sans-serif;font-weight:800;
+    text-transform:uppercase;letter-spacing:.01em;line-height:.92;margin:0;
+  }
+  a{color:inherit}
+  img{display:block;max-width:100%}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad)}
+  .eyebrow{
+    font-family:"Inter";font-weight:700;text-transform:uppercase;
+    letter-spacing:.28em;font-size:12px;color:var(--cyan);margin:0 0 14px;
+  }
+  .accent-cyan{color:var(--cyan)}
+  .accent-mag{color:var(--magenta)}
+  .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;padding:clamp(36px,7vw,80px) 0 clamp(28px,4vw,44px)}
+  .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
+  .hero h1{font-size:clamp(52px,11vw,140px);font-style:italic}
+  .hero .sub{
+    font-family:"Saira Condensed";font-weight:600;text-transform:uppercase;
+    letter-spacing:.03em;color:var(--muted);font-size:clamp(15px,2.4vw,22px);
+    margin-top:16px;
+  }
+  .hero .sub b{color:var(--ink);font-weight:700}
+  .xmark{width:clamp(52px,9vw,92px);flex:none;filter:drop-shadow(0 0 18px rgba(162,77,255,.45))}
+
+  /* ---------- PHOTO GRID ---------- */
+  .grid-photos{
+    display:grid;gap:12px;margin-top:clamp(24px,4vw,40px);
+    grid-template-columns:1.4fr 1fr 1fr;
+  }
+  .shot{position:relative;border-radius:14px;overflow:hidden;background:var(--card);
+    aspect-ratio:16/10;border:1px solid var(--line)}
+  .shot:first-child{grid-row:span 1}
+  .shot img{width:100%;height:100%;object-fit:cover}
+  .shot::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(4,5,10,.75))}
+  .tag{
+    position:absolute;z-index:2;bottom:12px;left:12px;display:inline-flex;align-items:center;gap:7px;
+    background:rgba(6,8,14,.78);border:1px solid rgba(255,255,255,.12);
+    padding:5px 11px;border-radius:999px;backdrop-filter:blur(6px);
+    font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  }
+  .tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+
+  /* ---------- STAT STRIP ---------- */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:clamp(26px,4vw,40px);
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:22px 0}
+  .stat .n{font-family:"Saira Condensed";font-weight:800;font-size:clamp(24px,3.4vw,34px);text-transform:uppercase;line-height:1}
+  .stat .l{color:var(--muted);font-size:12px;letter-spacing:.16em;text-transform:uppercase;margin-top:6px}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:clamp(46px,7vw,84px) 0}
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:clamp(22px,3vw,34px);flex-wrap:wrap}
+  .sec-head h2{font-size:clamp(30px,5.5vw,58px);font-style:italic}
+  .sec-head .idx{font-family:"Inter";font-weight:700;letter-spacing:.2em;font-size:12px;color:var(--muted-2);text-transform:uppercase}
+
+  /* ---------- TIER CARDS ---------- */
+  .tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .tier{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 20px}
+  .tier.feat{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan),0 0 34px rgba(38,228,242,.12)}
+  .tier .rooms{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .tier .price{font-family:"Saira Condensed";font-weight:800;font-size:44px;line-height:1;margin:10px 0 4px}
+  .tier .price small{font-size:15px;color:var(--muted);font-weight:600}
+  .tier .bed{color:var(--muted);font-size:14px}
+
+  /* ---------- INFO CARDS ---------- */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .card .cap{padding:11px 16px;font-family:"Saira Condensed";font-weight:800;text-transform:uppercase;letter-spacing:.03em;font-size:19px;color:#04121a;background:var(--cyan)}
+  .card .cap.p{background:var(--purple);color:#0a0416}
+  .card ul{margin:0;padding:16px 18px 18px;list-style:none}
+  .card li{position:relative;padding-left:20px;margin:9px 0;color:#cfd3e4;font-size:15px}
+  .card li::before{content:"";position:absolute;left:0;top:9px;width:7px;height:7px;background:var(--magenta);border-radius:1px}
+
+  /* ---------- ROSTER ---------- */
+  .roster{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:26px 18px}
+  .who{display:flex;flex-direction:column;align-items:center;text-align:center}
+  .avatar{width:118px;height:118px;border-radius:50%;padding:3px;background:var(--grad);flex:none}
+  .avatar span,.avatar img{display:flex;width:100%;height:100%;border-radius:50%;object-fit:cover;
+    align-items:center;justify-content:center;background:var(--bg-2);
+    font-family:"Saira Condensed";font-weight:800;font-size:34px;color:var(--muted)}
+  .who .nm{font-family:"Saira Condensed";font-weight:700;text-transform:uppercase;font-size:20px;margin-top:14px;letter-spacing:.02em}
+  .who .fo{color:var(--muted);font-size:13px;letter-spacing:.04em}
+  .who .soc{display:flex;gap:10px;margin-top:8px}
+  .who .soc a{color:var(--muted);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid transparent}
+  .who .soc a:hover{color:var(--cyan);border-color:var(--cyan)}
+  .who.tbd .avatar{background:var(--line)}
+  .who.tbd .nm{color:var(--muted)}
+
+  /* ---------- CTA ---------- */
+  .cta{background:linear-gradient(180deg,var(--bg-2),var(--bg));border:1px solid var(--line);border-radius:20px;
+    padding:clamp(30px,5vw,54px);text-align:center;position:relative;overflow:hidden}
+  .cta::before{content:"";position:absolute;inset:0;background:radial-gradient(50% 120% at 50% 0%,rgba(38,228,242,.14),transparent 70%)}
+  .cta h2{font-size:clamp(34px,6vw,64px);font-style:italic;position:relative}
+  .cta p{color:var(--muted);max-width:52ch;margin:14px auto 26px;position:relative}
+  .btn{display:inline-block;font-family:"Saira Condensed";font-weight:800;text-transform:uppercase;letter-spacing:.06em;
+    font-size:19px;padding:15px 34px;border-radius:10px;text-decoration:none;position:relative;
+    background:var(--grad);color:#05060c;box-shadow:0 10px 40px rgba(38,228,242,.22)}
+  .btn:hover{filter:brightness(1.08)}
+  .btn[aria-disabled="true"]{background:var(--line);color:var(--muted);box-shadow:none;pointer-events:none}
+  .cta .fine{margin-top:16px;font-size:12.5px;color:var(--muted-2);position:relative;letter-spacing:.02em}
+
+  /* ---------- PINEAPPLE ---------- */
+  .pine{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:clamp(26px,4vw,44px)}
+  .pine .days{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+  .pine .day{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--bg-2)}
+  .pine .day .d{font-family:"Saira Condensed";font-weight:800;text-transform:uppercase;color:var(--cyan);font-size:15px;letter-spacing:.08em}
+  .pine .day .t{font-weight:600;margin-top:6px;font-size:15px}
+  .pine .day .x{color:var(--muted);font-size:13.5px;margin-top:4px}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--line);padding:34px 0;color:var(--muted);font-size:13px}
+  footer .fw{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+  footer b{color:var(--ink);font-family:"Saira Condensed";font-weight:800;text-transform:uppercase;letter-spacing:.04em;font-size:16px}
+
+  .note{color:var(--muted);font-size:15px;max-width:60ch}
+  .lead-in{color:var(--magenta);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:12px}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:860px){
+    .grid-photos{grid-template-columns:1fr 1fr}
+    .stats{grid-template-columns:1fr 1fr}
+    .tiers{grid-template-columns:1fr 1fr}
+    .cards{grid-template-columns:1fr}
+    .pine .days{grid-template-columns:1fr}
+  }
+  @media(max-width:520px){
+    .grid-photos{grid-template-columns:1fr}
+    .tiers{grid-template-columns:1fr}
+  }
+  a:focus-visible,.btn:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:6px}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-top">
+      <div>
+        <p class="eyebrow">Ducati Studios · Palm Springs</p>
+        <h1>The Pineapple<br>House</h1>
+        <p class="sub"><b>Oct 12–16, 2026</b> · 7 suites · 16 creators · chef on site · <b>closed set</b></p>
+      </div>
+      <svg class="xmark" viewBox="0 0 100 100" aria-hidden="true">
+        <defs><linearGradient id="xg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#26e4f2"/><stop offset="1" stop-color="#a24dff"/>
+        </linearGradient></defs>
+        <line x1="24" y1="20" x2="82" y2="80" stroke="url(#xg)" stroke-width="15" stroke-linecap="round"/>
+        <line x1="80" y1="20" x2="22" y2="80" stroke="url(#xg)" stroke-width="15" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <!-- house photo grid -->
+    <div class="grid-photos">
+      <figure class="shot"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/f13ff075-6d2b-40a8-b86b-0c82f01dde16.jpeg?im_w=1200" alt="Resort pool and deck at dusk"><figcaption class="tag">Pool &amp; Deck</figcaption></figure>
+      <figure class="shot"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NjA4MjQ5MjA5MTQwMDA0NDEz/original/82bb0699-255f-4a03-833f-89e91dd84a1e.jpeg?im_w=1200" alt="Primary suite"><figcaption class="tag">Primary Suite</figcaption></figure>
+      <figure class="shot"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/0563066d-5ee0-4f52-9270-3fe9dab7c72a.jpeg?im_w=1200" alt="Outdoor kitchen and grounds"><figcaption class="tag">Outdoor Kitchen</figcaption></figure>
+    </div>
+
+    <!-- stat strip -->
+    <div class="stats">
+      <div class="stat"><div class="n">7 Suites</div><div class="l">Sleeps the roster</div></div>
+      <div class="stat"><div class="n">Chef</div><div class="l">3 meals a day</div></div>
+      <div class="stat"><div class="n">Gated</div><div class="l">Fully private estate</div></div>
+      <div class="stat"><div class="n">Pool · Gym</div><div class="l">Sauna · spa · plunge</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== ROOMS & BUY-IN ===================== -->
+<section id="rooms">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">01</span><h2>Rooms &amp; buy-in</h2></div>
+    <p class="note">Your spot is a per-head buy-in that covers your bed for the full run. Rates vary by room — reserve early, rooms fill as they're confirmed.</p>
+    <div class="tiers" style="margin-top:26px">
+      <div class="tier feat">
+        <div class="rooms">Bedroom 1 · Primary</div>
+        <div class="price">$900<small>/head</small></div>
+        <div class="bed">King suite · sleeps 2</div>
+      </div>
+      <div class="tier">
+        <div class="rooms">Bedrooms 2–5</div>
+        <div class="price">$825<small>/head</small></div>
+        <div class="bed">King · sleeps 2 each</div>
+      </div>
+      <div class="tier">
+        <div class="rooms">Bedroom 6</div>
+        <div class="price">$750<small>/head</small></div>
+        <div class="bed">Full beds · sleeps 4</div>
+      </div>
+      <div class="tier">
+        <div class="rooms">Bedroom 7</div>
+        <div class="price">$700<small>/head</small></div>
+        <div class="bed">Queen · sleeps 2</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WHAT'S INCLUDED ===================== -->
+<section id="included" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">02</span><h2>What's included</h2></div>
+    <div class="cards">
+      <div class="card">
+        <div class="cap">The stay</div>
+        <ul>
+          <li>Your bed for all 4 nights</li>
+          <li>Private chef — breakfast, lunch &amp; dinner daily</li>
+          <li>Pool, spa, sauna, cold plunge &amp; gym</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="cap">The shoot</div>
+        <ul>
+          <li>Participation in the collab shoots all week</li>
+          <li>Raw footage shared within 2 weeks of wrap</li>
+          <li>Cross-promotion across the network</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="cap p">Optional · studio</div>
+        <ul>
+          <li>Falcon Studios on site Oct 13–15</li>
+          <li>Get considered for studio scenes</li>
+          <li>Flag your interest when you sign up</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note" style="margin-top:16px"><span class="lead-in">Not included</span> &nbsp;Travel and transportation to and from Palm Springs is your responsibility.</p>
+  </div>
+</section>
+
+<!-- ===================== WHO'S IN THE HOUSE ===================== -->
+<section id="roster">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">03</span><h2>Who's in the house</h2></div>
+    <p class="note">Confirmed creators. Deposit locks your headshot in — the roster grows as spots fill.</p>
+    <div class="roster" id="roster-grid" style="margin-top:30px"><!-- rendered from data --></div>
+  </div>
+</section>
+
+<!-- ===================== ESSENTIALS ===================== -->
+<section id="essentials" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">04</span><h2>The essentials</h2></div>
+    <div class="cards">
+      <div class="card">
+        <div class="cap">Key dates</div>
+        <ul>
+          <li>Final payment due Sept 14</li>
+          <li>Test dated within 12 days of arrival (Sept 30+)</li>
+          <li>Arrive Mon Oct 12, 7–10pm PDT · out Fri Oct 16</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="cap">Before you come</div>
+        <ul>
+          <li>ID verification + 2257</li>
+          <li>OnlyFans &amp; JustForFans accounts set up</li>
+          <li>Complete the survey · line up collabs</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="cap p">House rules</div>
+        <ul>
+          <li>No drugs · no unapproved guests</li>
+          <li>Respect consent — ask first, always</li>
+          <li>Respect the space, the crew &amp; each other</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CTA ===================== -->
+<section id="claim">
+  <div class="wrap">
+    <div class="cta">
+      <h2>Let's put you <span class="accent-cyan">in the house</span></h2>
+      <p>Tell us you're interested and how to reach you. To lock a spot, reach out and place your 50% deposit — once it clears, your headshot goes up on the roster.</p>
+      <a class="btn" id="interest-cta" href="#" aria-disabled="true">Claim your spot</a>
+      <p class="fine">Interest form · booking &amp; deposit handled directly with the Ducati team</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PINEAPPLE ===================== -->
+<section id="pineapple" style="padding-top:0">
+  <div class="wrap">
+    <div class="pine">
+      <p class="eyebrow">Right before the house · Oct 9–11</p>
+      <h2 style="font-size:clamp(28px,5vw,52px);font-style:italic">🍍 Mx. Pineapple Palm Springs Takeover</h2>
+      <p class="note" style="margin-top:14px">Produced by Falcon | NakedSword — a weekend of cabaret, drag &amp; adult entertainment benefiting <b style="color:var(--ink)">Pineapple Support</b> (over $100K raised for adult-industry mental health). We have <b style="color:var(--ink)">3 off-site rooms</b> for creators who want to come in early and take part.</p>
+      <div class="days">
+        <div class="day"><div class="d">Fri 10/9</div><div class="t">VIP Pineapple Dinner</div></div>
+        <div class="day"><div class="d">Sat 10/10</div><div class="t">Mx. Pineapple Cabaret</div><div class="x">Live vocals, drag &amp; surprises</div></div>
+        <div class="day"><div class="d">Sun 10/11</div><div class="t">Pineapple Porn Disco &amp; Pool Party</div><div class="x">New this year — DJ, gogos, drag</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="wrap fw">
+    <div><b>Ducati Studios</b> &nbsp;·&nbsp; The Pineapple House</div>
+    <div>Palm Springs · Oct 12–16, 2026 &nbsp;·&nbsp; In support of Pineapple Support</div>
+  </div>
+</footer>
+
+<script>
+  /* ============================================================
+     CONFIG — set these two values, then everything wires up.
+     ============================================================ */
+
+  // 1) INTEREST FORM — paste the public form URL (Airtable form or Notion form):
+  const INTEREST_FORM_URL = "";  // e.g. "https://airtable.com/app.../pag..." or a Notion form URL
+
+  // 2) ROSTER — the page renders whatever is in roster.json, which is generated from the
+  //    Airtable roster at BUILD time (see build-roster.mjs / BUILD-NOTES.md). Un-book or
+  //    delete a performer in the backend, rebuild, and they drop off here automatically.
+  //    Field shape per performer: { name, followers, headshot, ig, x, of, jff }
+  //    The inline SAMPLE below is only a fallback so the page renders before the first
+  //    build. These are PLACEHOLDER faces (pravatar.cc) + sample socials so the headshot
+  //    and social rendering can be reviewed — the Airtable build overwrites this.
+  const SAMPLE_ROSTER = [
+    { name:"Beau Butler", followers:"1.1M followers", headshot:"https://i.pravatar.cc/320?img=12", ig:"https://instagram.com/", x:"https://x.com/", of:"https://onlyfans.com/", jff:"https://justfor.fans/" },
+    { name:"Jaxx Cody",   followers:"384K followers", headshot:"https://i.pravatar.cc/320?img=33", ig:"https://instagram.com/", x:"https://x.com/", of:"https://onlyfans.com/", jff:"" },
+    { name:"Sean Xavier", followers:"431K followers", headshot:"https://i.pravatar.cc/320?img=8",  ig:"https://instagram.com/", x:"https://x.com/", of:"https://onlyfans.com/", jff:"https://justfor.fans/" },
+    { name:"Curved King", followers:"358K followers", headshot:"https://i.pravatar.cc/320?img=15", ig:"https://instagram.com/", x:"", of:"https://onlyfans.com/", jff:"" },
+  ];
+  const SHOW_TBD_SLOTS = 5; // ghost "spot open" tiles after the confirmed roster
+
+  function initials(n){return (n||"?").split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase();}
+  function socLink(label,url){return url?`<a href="${url}" target="_blank" rel="noopener">${label}</a>`:"";}
+
+  function renderRoster(list){
+    const grid = document.getElementById("roster-grid");
+    grid.innerHTML = "";
+    list.forEach(m=>{
+      const face = m.headshot ? `<img src="${m.headshot}" alt="${m.name}">` : `<span>${initials(m.name)}</span>`;
+      const soc = [socLink("IG",m.ig),socLink("X",m.x),socLink("OF",m.of),socLink("JFF",m.jff)].filter(Boolean).join("");
+      grid.insertAdjacentHTML("beforeend",
+        `<div class="who"><div class="avatar">${face}</div>
+          <div class="nm">${m.name}</div><div class="fo">${m.followers||""}</div>
+          ${soc?`<div class="soc">${soc}</div>`:""}</div>`);
+    });
+    for(let i=0;i<SHOW_TBD_SLOTS;i++){
+      grid.insertAdjacentHTML("beforeend",
+        `<div class="who tbd"><div class="avatar"><span>+</span></div><div class="nm">Spot open</div><div class="fo">Reserve now</div></div>`);
+    }
+  }
+
+  // Prefer roster.json (built from the backend); fall back to the inline sample.
+  fetch("roster.json",{cache:"no-store"})
+    .then(r=>r.ok?r.json():Promise.reject())
+    .then(d=>renderRoster(Array.isArray(d)?d:(d.roster||[])))
+    .catch(()=>renderRoster(SAMPLE_ROSTER));
+
+  // wire the CTA to the interest form
+  const cta = document.getElementById("interest-cta");
+  if(INTEREST_FORM_URL){
+    cta.href = INTEREST_FORM_URL; cta.target="_blank"; cta.rel="noopener";
+    cta.removeAttribute("aria-disabled");
+  }else{
+    cta.textContent = "Form link coming soon";
+  }
+</script>
+</body>
+</html>

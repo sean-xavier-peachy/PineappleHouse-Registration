@@ -1,0 +1,18 @@
+# macOS / Google Drive noise
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+
+# Secrets — never commit an Airtable token
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Local-only handoff doc (contains Airtable base ID + Notion DB IDs)
+BUILD-NOTES.md
