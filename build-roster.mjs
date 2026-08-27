@@ -47,7 +47,6 @@ const PROP = {
   name:        "Name",
   status:      "Status",
   headshot:    "Headshot",
-  followers:   "Followers",
   instagram:   "Instagram",
   x:           "X",
   onlyfans:    "OnlyFans",
@@ -118,13 +117,26 @@ function readProp(props, key) {
   }
 }
 
-// A social value may be a full URL or a bare handle — normalise either to a URL.
-function socialUrl(value, base) {
-  const v = (value ?? "").toString().trim();
-  if (!v) return "";
-  if (/^https?:\/\//i.test(v)) return v;
-  return base + v.replace(/^@/, "").replace(/^\/+/, "");
+// Models type a USERNAME, not a URL — that's what they actually know. Whatever
+// they enter (`foo`, `@foo`, `instagram.com/foo`, a full pasted profile URL, or
+// one with a trailing slash or tracking query) is reduced to the bare username,
+// and the canonical URL is rebuilt here. A wrong URL typed into the form still
+// produces a correct link on the site.
+function username(value) {
+  let s = (value ?? "").toString().trim();
+  if (!s) return "";
+  s = s.replace(/^@+/, "");
+  s = s.replace(/^https?:\/\//i, "").replace(/^www\./i, "");
+  if (s.includes("/")) {                       // they pasted a URL after all
+    const parts = s.split(/[?#]/)[0].split("/").filter(Boolean);
+    s = parts[parts.length - 1] || "";
+  }
+  return s.split(/[?#]/)[0].replace(/^@+/, "").trim();
 }
+const profileUrl = (value, base) => {
+  const u = username(value);
+  return u ? base + u : "";
+};
 
 // --- preflight: do the property names actually exist? ----------------------
 async function preflight() {
@@ -207,19 +219,17 @@ console.log(`\n${pages.length} rows in the database, ${booked.length} with statu
 const roster = [];
 for (const page of booked) {
   const f = page.properties;
-  const followers = readProp(f, PROP.followers);
   roster.push({
-    name:      readProp(f, PROP.name) || "",
-    followers: followers ? `${followers}`.replace(/\s*followers$/i, "") + " followers" : "",
-    headshot:  await downloadHeadshot(page),
-    ig:  socialUrl(readProp(f, PROP.instagram),   "https://instagram.com/"),
-    x:   socialUrl(readProp(f, PROP.x),           "https://x.com/"),
-    of:  socialUrl(readProp(f, PROP.onlyfans),    "https://onlyfans.com/"),
-    jff: socialUrl(readProp(f, PROP.justforfans), "https://justfor.fans/"),
+    name:     readProp(f, PROP.name) || "",
+    headshot: await downloadHeadshot(page),
+    ig:  profileUrl(readProp(f, PROP.instagram),   "https://instagram.com/"),
+    x:   profileUrl(readProp(f, PROP.x),           "https://x.com/"),
+    of:  profileUrl(readProp(f, PROP.onlyfans),    "https://onlyfans.com/"),
+    jff: profileUrl(readProp(f, PROP.justforfans), "https://justfor.fans/"),
   });
 }
 
 await writeFile(OUT_JSON, JSON.stringify(roster, null, 2));
 console.log(`Wrote ${OUT_JSON} with ${roster.length} performers.`);
 const noShot = roster.filter(r => !r.headshot).length;
-if (noShot) console.log(`Note: ${noShot} have no headshot — the site will show an empty ring for them.`);
+if (noShot) console.log(`Note: ${noShot} have no headshot — the site shows their initials in the gradient ring until one is added.`);

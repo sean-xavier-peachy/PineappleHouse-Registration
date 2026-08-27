@@ -360,21 +360,24 @@
      CONFIG — set these two values, then everything wires up.
      ============================================================ */
 
-  // 1) INTEREST FORM — paste the public form URL (Airtable form or Notion form):
-  const INTEREST_FORM_URL = "";  // e.g. "https://airtable.com/app.../pag..." or a Notion form URL
+  // 1) INTEREST FORM — paste the PUBLISHED Notion form link (Share form -> copy link).
+  //    A workspace "Copy link" URL will NOT work — models would hit a login wall.
+  const INTEREST_FORM_URL = "";  // the PUBLISHED Notion form link (Share form -> copy link)
 
   // 2) ROSTER — the page renders whatever is in roster.json, which is generated from the
-  //    Airtable roster at BUILD time (see build-roster.mjs / BUILD-NOTES.md). Un-book or
-  //    delete a performer in the backend, rebuild, and they drop off here automatically.
-  //    Field shape per performer: { name, followers, headshot, ig, x, of, jff }
+  //    Notion Models DB at BUILD time (see build-roster.mjs). Change someone's Status away
+  //    from "Booked", or delete their row, rebuild, and they drop off here automatically.
+  //    Field shape per performer: { name, headshot, ig, x, of, jff }
+  //    Social values are already full URLs — build-roster.mjs turns the username a model
+  //    typed into the form into the canonical profile URL.
   //    The inline SAMPLE below is only a fallback so the page renders before the first
   //    build. These are PLACEHOLDER faces (pravatar.cc) + sample socials so the headshot
-  //    and social rendering can be reviewed — the Airtable build overwrites this.
+  //    and social rendering can be reviewed — the first build overwrites this.
   const SAMPLE_ROSTER = [
-    { name:"Beau Butler", followers:"1.1M followers", headshot:"https://i.pravatar.cc/320?img=12", ig:"https://instagram.com/", x:"https://x.com/", of:"https://onlyfans.com/", jff:"https://justfor.fans/" },
-    { name:"Jaxx Cody",   followers:"384K followers", headshot:"https://i.pravatar.cc/320?img=33", ig:"https://instagram.com/", x:"https://x.com/", of:"https://onlyfans.com/", jff:"" },
-    { name:"Sean Xavier", followers:"431K followers", headshot:"https://i.pravatar.cc/320?img=8",  ig:"https://instagram.com/", x:"https://x.com/", of:"https://onlyfans.com/", jff:"https://justfor.fans/" },
-    { name:"Curved King", followers:"358K followers", headshot:"https://i.pravatar.cc/320?img=15", ig:"https://instagram.com/", x:"", of:"https://onlyfans.com/", jff:"" },
+    { name:"Beau Butler", headshot:"https://i.pravatar.cc/320?img=12", ig:"https://instagram.com/", x:"https://x.com/", of:"https://onlyfans.com/", jff:"https://justfor.fans/" },
+    { name:"Jaxx Cody",   headshot:"https://i.pravatar.cc/320?img=33", ig:"https://instagram.com/", x:"https://x.com/", of:"https://onlyfans.com/", jff:"https://justfor.fans/" },
+    { name:"Sean Xavier", headshot:"",                                 ig:"https://instagram.com/", x:"https://x.com/", of:"https://onlyfans.com/", jff:"https://justfor.fans/" },
+    { name:"Curved King", headshot:"https://i.pravatar.cc/320?img=15", ig:"",                       x:"", of:"https://onlyfans.com/", jff:"https://justfor.fans/" },
   ];
   const SHOW_TBD_SLOTS = 5; // ghost "spot open" tiles after the confirmed roster
 
@@ -389,7 +392,7 @@
       const soc = [socLink("IG",m.ig),socLink("X",m.x),socLink("OF",m.of),socLink("JFF",m.jff)].filter(Boolean).join("");
       grid.insertAdjacentHTML("beforeend",
         `<div class="who"><div class="avatar">${face}</div>
-          <div class="nm">${m.name}</div><div class="fo">${m.followers||""}</div>
+          <div class="nm">${m.name}</div>
           ${soc?`<div class="soc">${soc}</div>`:""}</div>`);
     });
     for(let i=0;i<SHOW_TBD_SLOTS;i++){
