@@ -362,14 +362,14 @@
 
   // 1) INTEREST FORM — paste the PUBLISHED Notion form link (Share form -> copy link).
   //    A workspace "Copy link" URL will NOT work — models would hit a login wall.
-  const INTEREST_FORM_URL = "";  // the PUBLISHED Notion form link (Share form -> copy link)
+  const INTEREST_FORM_URL = "https://app.notion.com/p/3c9bc34c2ab2802883dbc251c57156f8";
 
   // 2) ROSTER — the page renders whatever is in roster.json, which is generated from the
   //    Notion Models DB at BUILD time (see build-roster.mjs). Change someone's Status away
   //    from "Booked", or delete their row, rebuild, and they drop off here automatically.
   //    Field shape per performer: { name, headshot, ig, x, of, jff }
-  //    Social values are already full URLs — build-roster.mjs turns the username a model
-  //    typed into the form into the canonical profile URL.
+  //    Social values are already full URLs. IG and X are built from the username the
+  //    model typed; OF and JFF are the URLs they entered, used as-is.
   //    The inline SAMPLE below is only a fallback so the page renders before the first
   //    build. These are PLACEHOLDER faces (pravatar.cc) + sample socials so the headshot
   //    and social rendering can be reviewed — the first build overwrites this.

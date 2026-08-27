@@ -117,11 +117,15 @@ function readProp(props, key) {
   }
 }
 
-// Models type a USERNAME, not a URL — that's what they actually know. Whatever
-// they enter (`foo`, `@foo`, `instagram.com/foo`, a full pasted profile URL, or
-// one with a trailing slash or tracking query) is reduced to the bare username,
-// and the canonical URL is rebuilt here. A wrong URL typed into the form still
-// produces a correct link on the site.
+// Instagram and X are TEXT fields — models type a bare username, which is what
+// they actually know, and the canonical URL is rebuilt here. Whatever they enter
+// (`foo`, `@foo`, `instagram.com/foo`, a full pasted profile URL, or one with a
+// trailing slash or tracking query) reduces to the username first, so a mistyped
+// URL still produces a correct link.
+//
+// OnlyFans and JustForFans are URL fields and are used EXACTLY as entered — on
+// those platforms a profile URL is not always username-equivalent, so rebuilding
+// one from a username would produce a broken link. See asUrl() below.
 function username(value) {
   let s = (value ?? "").toString().trim();
   if (!s) return "";
@@ -137,6 +141,14 @@ const profileUrl = (value, base) => {
   const u = username(value);
   return u ? base + u : "";
 };
+
+// Pass a typed URL through untouched, only supplying a protocol if it's missing
+// (Notion URL properties can store `onlyfans.com/x` without one).
+function asUrl(value) {
+  const v = (value ?? "").toString().trim();
+  if (!v) return "";
+  return /^https?:\/\//i.test(v) ? v : "https://" + v.replace(/^\/+/, "");
+}
 
 // --- preflight: do the property names actually exist? ----------------------
 async function preflight() {
@@ -222,10 +234,10 @@ for (const page of booked) {
   roster.push({
     name:     readProp(f, PROP.name) || "",
     headshot: await downloadHeadshot(page),
-    ig:  profileUrl(readProp(f, PROP.instagram),   "https://instagram.com/"),
-    x:   profileUrl(readProp(f, PROP.x),           "https://x.com/"),
-    of:  profileUrl(readProp(f, PROP.onlyfans),    "https://onlyfans.com/"),
-    jff: profileUrl(readProp(f, PROP.justforfans), "https://justfor.fans/"),
+    ig:  profileUrl(readProp(f, PROP.instagram), "https://instagram.com/"), // text -> URL
+    x:   profileUrl(readProp(f, PROP.x),         "https://x.com/"),         // text -> URL
+    of:  asUrl(readProp(f, PROP.onlyfans)),                                 // URL as typed
+    jff: asUrl(readProp(f, PROP.justforfans)),                              // URL as typed
   });
 }
 
