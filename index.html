@@ -114,7 +114,10 @@
   .dock-row{display:flex;align-items:center;justify-content:space-between;gap:16px}
   .dock-title{font-family:"Saira Condensed";font-weight:800;font-style:italic;
     text-transform:uppercase;letter-spacing:.02em;font-size:clamp(15px,2vw,23px);
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    /* the italic slant on the final glyph overhangs its advance width and
+       gets shaved by overflow:hidden — this gives it room */
+    padding-right:.18em;flex:0 1 auto;min-width:0}
   .cta-dock .btn{flex:none;padding:11px 26px;font-size:16px}
   @media(max-width:560px){
     .dock-title{font-size:14px}
@@ -200,6 +203,7 @@
   .card ul{margin:0;padding:16px 18px 18px;list-style:none}
   .card li{position:relative;padding-left:20px;margin:9px 0;color:#cfd3e4;font-size:15px}
   .card li::before{content:"";position:absolute;left:0;top:9px;width:7px;height:7px;background:var(--magenta);border-radius:1px}
+  .cards.c1{grid-template-columns:1fr}
   .cards.c2{grid-template-columns:repeat(2,1fr)}
   .cards.c4{grid-template-columns:repeat(4,1fr)}
   /* progressive disclosure — a Notion toggle becomes an expandable line */
@@ -533,7 +537,8 @@
     inner+=s.intro.map(t=>`<p class="note">${t}</p>`).join("");
     if(tiers) inner+=tiersHTML(tiers);
     if(s.groups.length){
-      const cls=s.groups.length===2?" c2":s.groups.length===4?" c4":"";
+      const n=s.groups.length;
+      const cls=n===1?" c1":n===2?" c2":n===4?" c4":"";
       inner+=`<div class="cards${cls}" style="margin-top:26px">`+s.groups.map(groupHTML).join("")+`</div>`;
     }
     inner+=s.callouts.map(c=>`<p class="note" style="margin-top:16px">`+
