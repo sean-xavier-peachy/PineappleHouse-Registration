@@ -405,16 +405,19 @@
     .then(d=>renderRoster(Array.isArray(d)?d:(d.roster||[])))
     .catch(()=>renderRoster(SAMPLE_ROSTER));
 
-  // ---- sticky footer CTA: appears once the in-flow CTA has scrolled past ----
+  // ---- sticky footer CTA: visible throughout, except over the in-flow CTA ----
   (function(){
     const dock=document.getElementById("cta-dock"), inflow=document.getElementById("claim");
     if(!dock||!inflow) return;
     let queued=false;
     function update(){
       queued=false;
-      const past = inflow.getBoundingClientRect().bottom < 0;
-      dock.classList.toggle("show", past);
-      dock.setAttribute("aria-hidden", past ? "false" : "true");
+      // Hide only while the full CTA section is on screen — showing both at once
+      // would put the same action in front of the reader twice.
+      const r = inflow.getBoundingClientRect();
+      const ctaOnScreen = r.bottom > 0 && r.top < innerHeight;
+      dock.classList.toggle("show", !ctaOnScreen);
+      dock.setAttribute("aria-hidden", ctaOnScreen ? "true" : "false");
     }
     // Reserve exactly the dock's height so it never covers the footer — measured,
     // because the row wraps to two lines on narrow screens.
