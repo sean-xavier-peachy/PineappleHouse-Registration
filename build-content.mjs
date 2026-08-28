@@ -68,7 +68,7 @@ const splitEmoji = s => {
 };
 
 const top = await children(PAGE);
-const doc = { hero:{eyebrow:"",meta:[]}, intro:[], sections:[] };
+const doc = { intro:[], highlights:[], sections:[] };
 let section=null, group=null;
 
 async function detailOf(b){
@@ -88,9 +88,13 @@ for (const b of top){
 
   if (t==="callout"){
     const text = rich(v.rich_text);
-    const items = b.has_children ? (await children(b.id)).filter(k=>k.type==="bulleted_list_item").map(k=>plain(k.bulleted_list_item.rich_text)) : [];
-    if (!section && !doc.hero.eyebrow){ doc.hero.eyebrow = plain(v.rich_text); doc.hero.meta = items; continue; }
-    if (section) section.callouts.push({ emoji: v.icon?.emoji||"", html:text });
+    // A callout before the first H2 is a page-level highlight (the Pineapple
+    // band). Inside a section it stays a highlighted note.
+    if (!section){
+      doc.highlights.push({ emoji: v.icon?.emoji||"", html:text, detail: await detailOf(b) });
+      continue;
+    }
+    section.callouts.push({ emoji: v.icon?.emoji||"", html:text });
     continue;
   }
   if (t==="heading_2"){
@@ -142,5 +146,5 @@ if (rooms){
 await writeFile("content.json", JSON.stringify(doc,null,2));
 const n=s=>s.groups.reduce((a,g)=>a+g.items.length,0);
 console.log(`Wrote content.json`);
-console.log(`  hero meta: ${doc.hero.meta.length} · intro: ${doc.intro.length} paras · tiers: ${doc.tiers?.length||0}`);
+console.log(`  intro: ${doc.intro.length} paras · highlights: ${doc.highlights.length} · tiers: ${doc.tiers?.length||0}`);
 for(const s of doc.sections) console.log(`  ${s.emoji} ${s.title.padEnd(34)} ${s.groups.length} groups, ${n(s)} items, ${s.callouts.length} callouts`);

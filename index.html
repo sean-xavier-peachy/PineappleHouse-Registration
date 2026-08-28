@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Pineapple House · Ducati Studios · Palm Springs</title>
-<meta name="description" content="Ducati X Collab House — Palm Springs, Oct 12–16, 2026. Private resort estate, chef on site, five studio brands. See who's coming and claim your spot.">
+<meta name="description" content="Ducati X Collab House · Palm Springs, Oct 12–16, 2026. Private resort estate, chef on site, five studio brands. See who's coming and claim your spot.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:ital,wght@0,500;0,600;0,700;0,800;1,700;1,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   /* ============================================================
-     DESIGN TOKENS  — derived from the Ducati X leave-behind
+     DESIGN TOKENS: derived from the Ducati X leave-behind
      ============================================================ */
   :root{
     --bg:#07080e;
@@ -69,7 +69,7 @@
   .xmark{width:clamp(52px,9vw,92px);flex:none;filter:drop-shadow(0 0 18px rgba(162,77,255,.45))}
 
   /* ---------- PHOTO GRID ---------- */
-  /* ---------- STAT PILL — same treatment in carousel, CTA and dock ---------- */
+  /* ---------- STAT PILL: same treatment in carousel, CTA and dock ---------- */
   .stat-pill{
     display:inline-flex;align-items:center;gap:9px;white-space:nowrap;
     font-family:"Saira Condensed",sans-serif;font-weight:800;font-style:italic;
@@ -80,7 +80,7 @@
   }
   .stat-pill .sep{color:var(--cyan);opacity:.9;font-weight:700}
   /* 1 · pinned to the bottom of the carousel, clear of the dots.
-        Type matches .sec-head h2 exactly — same clamp, so it tracks the
+        Type matches .sec-head h2 exactly, same clamp, so it tracks the
         section headings at every viewport width. Padding is in em so the
         pill grows with the text rather than needing its own breakpoints. */
   .car-badge{position:absolute;left:50%;transform:translateX(-50%);z-index:4;
@@ -88,7 +88,7 @@
   .car-badge .stat-pill{
     font-size:clamp(30px,5.5vw,58px);
     padding:.26em .58em;gap:.34em;letter-spacing:.01em;
-    /* translucent so the photo reads through — the blur and a slight
+    /* translucent so the photo reads through, the blur and a slight
        saturation lift keep the text legible over bright frames */
     background:rgba(7,8,14,.58);
     backdrop-filter:blur(18px) saturate(125%);
@@ -123,7 +123,7 @@
     text-transform:uppercase;letter-spacing:.02em;font-size:clamp(15px,2vw,23px);
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
     /* the italic slant on the final glyph overhangs its advance width and
-       gets shaved by overflow:hidden — this gives it room */
+       gets shaved by overflow:hidden, this gives it room */
     padding-right:.18em;flex:0 1 auto;min-width:0}
   .cta-dock .btn{flex:none;padding:11px 26px;font-size:16px}
   @media(max-width:560px){
@@ -135,17 +135,37 @@
   body{padding-bottom:calc(96px + env(safe-area-inset-bottom))} /* fallback; JS measures the dock */
 
   /* ---------- HERO INTRO (from Notion) ---------- */
-  .hero-intro{
-    margin-top:clamp(20px,3vw,30px);padding-left:18px;
-    border-left:2px solid var(--cyan);
-    border-image:linear-gradient(180deg,var(--cyan),var(--purple)) 1;
-  }
+  .hero-intro{margin-top:clamp(18px,2.6vw,26px)}
   .hero-intro p{
     margin:0;max-width:72ch;color:#cfd3e4;
     font-size:clamp(15px,1.55vw,18px);line-height:1.68;
   }
   .hero-intro p+p{margin-top:12px}
   .hero-intro:empty{display:none}
+
+  /* ---------- PINEAPPLE BAND ---------- */
+  #pineapple-band{padding-block:clamp(24px,3.4vw,44px)}
+  .pband{
+    background:
+      radial-gradient(120% 150% at 10% 0%, rgba(38,228,242,.11), transparent 62%),
+      radial-gradient(120% 150% at 90% 100%, rgba(162,77,255,.13), transparent 62%),
+      var(--card);
+    border:1px solid var(--line);border-radius:20px;
+    padding:clamp(24px,3.4vw,40px);
+  }
+  .pband .eyebrow{margin:0 0 16px}
+  .pband-head{display:flex;align-items:center;gap:clamp(18px,3vw,32px);flex-wrap:wrap;margin-bottom:20px}
+  .ps-logo{height:clamp(44px,5.6vw,72px);width:auto;display:block}
+  .pband-stat{display:flex;flex-direction:column;gap:5px;
+    padding-left:clamp(18px,3vw,32px);border-left:1px solid var(--line)}
+  .pband-stat .n{font-family:"Saira Condensed",sans-serif;font-weight:800;font-style:italic;
+    font-size:clamp(28px,4vw,46px);line-height:1;
+    background:linear-gradient(90deg,var(--cyan),var(--purple));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .pband-stat .l{font-family:"Inter";font-weight:700;font-size:11px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--muted-2)}
+  .pband-copy{margin:0;color:#cfd3e4;font-size:clamp(15px,1.5vw,17px);line-height:1.68;max-width:78ch}
+  @media(max-width:560px){ .pband-stat{padding-left:0;border-left:0} }
 
   /* ---------- HOUSE CAROUSEL ---------- */
   .carousel{position:relative;margin-top:clamp(24px,4vw,40px)}
@@ -213,7 +233,7 @@
   .cards.c1{grid-template-columns:1fr}
   .cards.c2{grid-template-columns:repeat(2,1fr)}
   .cards.c4{grid-template-columns:repeat(4,1fr)}
-  /* progressive disclosure — a Notion toggle becomes an expandable line */
+  /* progressive disclosure, a Notion toggle becomes an expandable line */
   .disc{margin:0}
   .disc summary{cursor:pointer;list-style:none;display:flex;align-items:flex-start;gap:10px}
   .disc summary::-webkit-details-marker{display:none}
@@ -239,7 +259,7 @@
   .who.tbd .nm{color:var(--muted)}
 
   /* ---------- CTA ---------- */
-  /* the CTA sits between two sections — keep it tight so it reads as a break, not a gap */
+  /* the CTA sits between two sections, keep it tight so it reads as a break, not a gap */
   #claim{padding-block:clamp(14px,2vw,26px)}
   #claim .cta{padding:clamp(22px,3.4vw,38px)}
   #claim .cta p{margin:12px auto 22px}
@@ -294,7 +314,6 @@
       <div>
         <p class="eyebrow">Ducati Studios · Palm Springs</p>
         <h1>The Pineapple<br>House</h1>
-        <p class="sub"><b>Oct 12–16, 2026</b> · 7 suites · 16 creators · chef on site · <b>closed set</b></p>
       </div>
       <svg class="xmark" viewBox="0 0 100 100" aria-hidden="true">
         <defs><linearGradient id="xg" x1="0" y1="0" x2="1" y2="1">
@@ -341,6 +360,24 @@
 
 
 <!-- ===== 01/02 · rendered from Notion (build-content.mjs) ===== -->
+<!-- ===== Pineapple band · promo highlight; the day-by-day detail is section 08 ===== -->
+<section id="pineapple-band">
+  <div class="wrap">
+    <div class="pband">
+      <p class="eyebrow">In support of</p>
+      <div class="pband-head">
+        <img class="ps-logo" src="assets/img/pineapple-support.svg" alt="Pineapple Support"
+             width="340" height="156" decoding="async">
+        <div class="pband-stat">
+          <span class="n">$100K+</span>
+          <span class="l">Raised</span>
+        </div>
+      </div>
+      <p class="pband-copy" id="pband-copy">Come early, Oct 9&ndash;11, for the Mx. Pineapple Palm Springs Takeover: the industry&rsquo;s weekend of cabaret, drag, and adult entertainment, and the reason everyone&rsquo;s in the desert. It&rsquo;s a fundraiser for Pineapple Support, the free, 24/7 mental-health and therapy service for people working in the adult industry. Being here is the fun part; funding what keeps our community well is the point. &darr;</p>
+    </div>
+  </div>
+</section>
+
 <!-- 01 · Rooms & buy-in -->
 <div id="sec-01"></div>
 
@@ -353,7 +390,7 @@
     <div class="cta">
       <h2>Let's put you <span class="accent-cyan">in the house</span></h2>
       <span class="stat-pill">4&nbsp;Nights <span class="sep">|</span> Starting at $700</span>
-      <p>Tell us you're interested and how to reach you. To lock a spot, reach out and place your 50% deposit — once it clears, your headshot goes up on the roster.</p>
+      <p>Tell us you're interested and how to reach you. To lock a spot, reach out and place your 50% deposit. Once it clears, your headshot goes up on the roster.</p>
       <a class="btn" id="interest-cta" href="#" aria-disabled="true">Claim your spot</a>
       <p class="fine">Interest form · booking &amp; deposit handled directly with the Ducati team</p>
     </div>
@@ -365,7 +402,7 @@
 <section id="roster">
   <div class="wrap">
     <div class="sec-head"><span class="idx">03</span><h2>Who's in the house</h2></div>
-    <p class="note">Confirmed creators. Deposit locks your headshot in — the roster grows as spots fill.</p>
+    <p class="note">Confirmed creators. Deposit locks your headshot in, and the roster grows as spots fill.</p>
     <div class="roster" id="roster-grid" style="margin-top:30px"><!-- rendered from data --></div>
   </div>
 </section>
@@ -386,7 +423,7 @@
   </div>
 </footer>
 
-<!-- sticky footer CTA — appears once the in-flow CTA scrolls away -->
+<!-- sticky footer CTA, appears once the in-flow CTA scrolls away -->
 <div class="cta-dock" id="cta-dock" aria-hidden="true">
   <div class="wrap">
     <div class="dock-row">
@@ -401,14 +438,14 @@
 
 <script>
   /* ============================================================
-     CONFIG — set these two values, then everything wires up.
+     CONFIG: set these two values, then everything wires up.
      ============================================================ */
 
-  // 1) INTEREST FORM — paste the PUBLISHED Notion form link (Share form -> copy link).
-  //    A workspace "Copy link" URL will NOT work — models would hit a login wall.
+  // 1) INTEREST FORM: paste the PUBLISHED Notion form link (Share form -> copy link).
+  //    A workspace "Copy link" URL will NOT work, models would hit a login wall.
   const INTEREST_FORM_URL = "https://app.notion.com/p/3c9bc34c2ab2802883dbc251c57156f8";
 
-  // 2) ROSTER — the page renders whatever is in roster.json, which is generated from the
+  // 2) ROSTER: the page renders whatever is in roster.json, which is generated from the
   //    Notion Models DB at BUILD time (see build-roster.mjs). Change someone's Status away
   //    from "Booked", or delete their row, rebuild, and they drop off here automatically.
   //    Field shape per performer: { name, headshot, ig, x, of, jff }
@@ -416,14 +453,14 @@
   //    model typed; OF and JFF are the URLs they entered, used as-is.
   //    The inline SAMPLE below is only a fallback so the page renders before the first
   //    build. These are PLACEHOLDER faces (pravatar.cc) + sample socials so the headshot
-  //    and social rendering can be reviewed — the first build overwrites this.
+  //    and social rendering can be reviewed, the first build overwrites this.
   const SAMPLE_ROSTER = [
     { name:"Beau Butler", headshot:"https://i.pravatar.cc/320?img=12", ig:"https://instagram.com/", x:"https://x.com/", of:"https://onlyfans.com/", jff:"https://justfor.fans/" },
     { name:"Jaxx Cody",   headshot:"https://i.pravatar.cc/320?img=33", ig:"https://instagram.com/", x:"https://x.com/", of:"https://onlyfans.com/", jff:"https://justfor.fans/" },
     { name:"Sean Xavier", headshot:"",                                 ig:"https://instagram.com/", x:"https://x.com/", of:"https://onlyfans.com/", jff:"https://justfor.fans/" },
     { name:"Curved King", headshot:"https://i.pravatar.cc/320?img=15", ig:"",                       x:"", of:"https://onlyfans.com/", jff:"https://justfor.fans/" },
   ];
-  const HOUSE_CAPACITY = 16; // beds in the house — ghost "spot open" tiles fill the gap
+  const HOUSE_CAPACITY = 16; // beds in the house, ghost "spot open" tiles fill the gap
 
   function initials(n){return (n||"?").split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase();}
   function socLink(label,url){return url?`<a href="${url}" target="_blank" rel="noopener">${label}</a>`:"";}
@@ -459,14 +496,14 @@
     let queued=false;
     function update(){
       queued=false;
-      // Hide only while the full CTA section is on screen — showing both at once
+      // Hide only while the full CTA section is on screen, showing both at once
       // would put the same action in front of the reader twice.
       const r = inflow.getBoundingClientRect();
       const ctaOnScreen = r.bottom > 0 && r.top < innerHeight;
       dock.classList.toggle("show", !ctaOnScreen);
       dock.setAttribute("aria-hidden", ctaOnScreen ? "true" : "false");
     }
-    // Reserve exactly the dock's height so it never covers the footer — measured,
+    // Reserve exactly the dock's height so it never covers the footer, measured,
     // because the row wraps to two lines on narrow screens.
     function reserve(){
       document.body.style.paddingBottom = (dock.offsetHeight + 28) + "px";
@@ -574,11 +611,10 @@
       // hero copy follows Notion too
       const hi=document.getElementById("hero-intro");
       if(hi && d.intro?.length) hi.innerHTML=d.intro.map(t=>`<p>${t}</p>`).join("");
-      if(d.hero?.eyebrow) document.querySelector(".eyebrow").textContent=d.hero.eyebrow;
-      if(d.hero?.meta?.length) document.querySelector(".sub").innerHTML=
-        d.hero.meta.map((m,i)=>(i===0||i===d.hero.meta.length-1)?`<b>${m}</b>`:m).join(" · ");
+      const pb=document.getElementById("pband-copy");
+      if(pb && d.highlights?.[0]?.detail?.[0]) pb.innerHTML=d.highlights[0].detail[0];
     })
-    .catch(()=>{ /* content.json absent — sections stay empty, rest of page works */ });
+    .catch(()=>{ /* content.json absent, sections stay empty, rest of page works */ });
 
   // wire the CTA to the interest form
   const cta = document.getElementById("interest-cta");

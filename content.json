@@ -1,16 +1,15 @@
 {
-  "hero": {
-    "eyebrow": "Ducati Studios · Palm Springs",
-    "meta": [
-      "OCT 12-16, 2026",
-      "7 Suites",
-      "16 Creators",
-      "Chef on site",
-      "Closed Set"
-    ]
-  },
   "intro": [
-    "Welcome, and get excited. You'll be creating at a fully gated resort estate, with a deep pool and fountains, spa, sauna, cold plunge, gym, chef's kitchen, and lush grounds. This is where we'll live and shoot for the week."
+    "Welcome, and get excited. You’re invited to film and fuck in a fully gated resort estate: deep pool, spa, sauna, cold plunge, gym, and lush grounds. This is where we’ll live and shoot for the week."
+  ],
+  "highlights": [
+    {
+      "emoji": "🍍",
+      "html": "In support of Pineapple Support · $100K+ raised",
+      "detail": [
+        "Come early, Oct 9–11, for the Mx. Pineapple Palm Springs Takeover: the industry’s weekend of cabaret, drag, and adult entertainment, and the reason everyone’s in the desert. It’s a fundraiser for Pineapple Support, the free, 24/7 mental-health and therapy service for people working in the adult industry. Being here is the fun part; funding what keeps our community well is the point. ↓"
+      ]
+    }
   ],
   "sections": [
     {
@@ -121,7 +120,7 @@
           "items": [
             {
               "type": "toggle",
-              "html": "Falcon Studios on site Oct 13–15 — flag your interest to be considered",
+              "html": "Falcon Studios on site Oct 13–15: flag your interest to be considered",
               "detail": [
                 "Falcon Studios will be on site shooting studio scenes Oct 13–15. If you'd like to be considered for studio work during the week, let us know when you sign up (and in the survey) and we'll connect interested performers with the studio team. Studio work is separate from the collab content and subject to the studio's own casting and paperwork."
               ]
@@ -164,7 +163,7 @@
             },
             {
               "type": "line",
-              "html": "Oct 16th: Checkout"
+              "html": "Oct 16th 10am: Checkout"
             }
           ]
         },
@@ -174,7 +173,7 @@
           "items": [
             {
               "type": "toggle",
-              "html": "Pay your full balance — due Sept 14",
+              "html": "Pay your full balance, due Sept 14",
               "detail": []
             },
             {
@@ -186,7 +185,7 @@
               "type": "toggle",
               "html": "Get tested (within 12 days of arrival)",
               "detail": [
-                "Your test must be dated within 12 days of arrival (Oct 12), i.e. Sept 30 or later. Get tested in time to receive your results and, if needed, get treated — we will ask for results. Ideally, test around Sept 30 – Oct 2 to leave a buffer for treatment."
+                "Your test must be dated within 12 days of arrival (Oct 12), i.e. Sept 30 or later. Get tested in time to receive your results and, if needed, get treated. We will ask for results. Ideally, test around Sept 30 – Oct 2 to leave a buffer for treatment."
               ]
             },
             {
@@ -234,7 +233,7 @@
             },
             {
               "type": "line",
-              "html": "We do not cover transportation — travel to and from Palm Springs is on you"
+              "html": "We do not cover transportation. Travel to and from Palm Springs is on you"
             }
           ]
         }
@@ -271,37 +270,11 @@
           "items": [
             {
               "type": "line",
-              "html": "Venmo: TBD"
+              "html": "Venmo: <a href=\"https://venmo.com/u/D79tk\" target=\"_blank\" rel=\"noopener\">Link Here</a>"
             },
             {
               "type": "line",
-              "html": "CashApp: TBD"
-            },
-            {
-              "type": "line",
-              "html": "PayPal: TBD"
-            },
-            {
-              "type": "line",
-              "html": "Zelle: TBD"
-            }
-          ]
-        },
-        {
-          "emoji": "🎯",
-          "title": "Referral discount",
-          "items": [
-            {
-              "type": "line",
-              "html": "$150 off per referred creator who books"
-            },
-            {
-              "type": "line",
-              "html": "Max 5 referral slots"
-            },
-            {
-              "type": "line",
-              "html": "Max discount = your total stay (referrals can offset your entire buy-in)"
+              "html": "Zelle: Dan@PeachyHq.com"
             }
           ]
         },
@@ -311,9 +284,9 @@
           "items": [
             {
               "type": "toggle",
-              "html": "50% refunded, as long as we have time to fill your spot",
+              "html": "50% refunded if replacement found",
               "detail": [
-                "Life happens, and we completely understand if something comes up. If you need to cancel, we'll refund 50% of your payment as long as we have time to fill your spot. Keep in mind that if there are other cancellations, refunds are awarded in order of cancellation — for example, if two people canceled ahead of you, we'll need to fill three spots before your refund."
+                "Life happens, and we completely understand if something comes up. If you need to cancel, we’ll refund 50% of your payment as long as we are able to fill your spot. Keep in mind that if there are other cancellations, refunds are awarded in order of cancellation. For example, if two people canceled ahead of you, we’ll need to fill three spots before your refund."
               ]
             }
           ]
@@ -436,9 +409,9 @@
             },
             {
               "type": "toggle",
-              "html": "✂️ A note on editing — please plan to do your own",
+              "html": "✂️ A note on editing: please plan to do your own",
               "detail": [
-                "We typically film 80+ collabs at each house — too much for our small team to edit in a short window. We are not responsible for editing; we're responsible for filming, organizing, and sharing all the files, plus cross-promotion. We'll eventually edit scenes and add them to the Dropbox folder, but since we don't edit until we're ready to post, that could be months out. Plan to do your own edits — and any edits you'd like to share back with us are greatly appreciated. We'll do the same."
+                "We typically film 80+ collabs at each house, too much for our small team to edit in a short window. We are not responsible for editing; we’re responsible for filming, organizing, and sharing all the files, plus cross-promotion. We’ll eventually edit scenes and add them to the Dropbox folder, but since we don’t edit until we’re ready to post, that could be months out. Plan to do your own edits, and any edits you’d like to share back with us are greatly appreciated. We’ll do the same."
               ]
             }
           ]
@@ -451,7 +424,7 @@
       "emoji": "🍍",
       "title": "2026 Mx. Pineapple Palm Springs Takeover",
       "intro": [
-        "Oct 9–11, 2026 — the weekend just before our house. Produced by Falcon | NakedSword, the Mx. Pineapple Palm Springs Takeover brings together adult entertainment, drag, and cabaret as a fundraiser for Pineapple Support — the free, 24/7 mental-health and therapy service for people working in the adult industry (over $100K raised to date). The weekend runs:"
+        "Oct 9–11, 2026, the weekend just before our house, produced by Falcon | NakedSword. The weekend runs:"
       ],
       "groups": [
         {
@@ -460,19 +433,19 @@
           "items": [
             {
               "type": "line",
-              "html": "Fri 10/9 — VIP Pineapple Dinner"
+              "html": "Fri 10/9 · VIP Pineapple Dinner"
             },
             {
               "type": "line",
-              "html": "Sat 10/10 — Mx. Pineapple Cabaret: live vocals, drag, and surprises. 2026 talent includes Ana Foxx, Sister Roma, Ethylina Canne, headliner Brian Justin Crum (America's Got Talent / Broadway), Vanity Halston, Pippi Lovestocking, and more"
+              "html": "Sat 10/10 · Mx. Pineapple Cabaret: live vocals, drag, and surprises. 2026 talent includes Ana Foxx, Sister Roma, Ethylina Canne, headliner Brian Justin Crum (America’s Got Talent / Broadway), Vanity Halston, Pippi Lovestocking, and more"
             },
             {
               "type": "line",
-              "html": "Sun 10/11 — Pineapple Porn Disco &amp; Pool Party (new this year): a T-dance and pool party with a renowned DJ, gogos, and drag"
+              "html": "Sun 10/11 · Pineapple Porn Disco &amp; Pool Party (new this year): a T-dance and pool party with a renowned DJ, gogos, and drag"
             },
             {
               "type": "note",
-              "html": "It's a great way to support the community — proceeds go to pineapplesupport.org — and to enjoy a few extra days in Palm Springs before the house."
+              "html": "Proceeds go to pineapplesupport.org."
             },
             {
               "type": "note",
@@ -480,7 +453,7 @@
             },
             {
               "type": "note",
-              "html": "Questions? Reach out anytime — we're glad you're here."
+              "html": "Questions? Reach out anytime. We’re glad you’re here."
             }
           ]
         }
