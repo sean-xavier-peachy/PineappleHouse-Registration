@@ -304,8 +304,8 @@
     letter-spacing:.2em;text-transform:uppercase;color:var(--muted-2)}
   .suggest-modal .sm-text{margin:0 0 22px;font-family:"Saira Condensed",sans-serif;font-weight:800;
     font-style:italic;text-transform:uppercase;font-size:clamp(20px,3vw,28px);line-height:1.25}
-  .suggest-modal .sm-text a{color:var(--cyan);text-decoration:none;white-space:nowrap}
-  .suggest-modal .sm-text a:hover{text-decoration:underline}
+  .suggest-modal .sm-note{margin:0 0 22px;color:var(--muted);font-size:14px;line-height:1.6}
+  .suggest-modal .sm-text{margin-bottom:10px}
 
   /* ---------- CTA ---------- */
   /* the CTA sits between two sections, keep it tight so it reads as a break, not a gap */
@@ -480,7 +480,8 @@
     </div>
     <dialog class="suggest-modal" id="suggest-modal">
       <p class="sm-eyebrow">Suggest a creator</p>
-      <p class="sm-text">Text Sean Xavier at <a href="tel:+12026745387">202-674-5387</a></p>
+      <p class="sm-text">The suggestion form is not live yet</p>
+      <p class="sm-note">Check back shortly, or mention them to any of the Ducati team.</p>
       <button class="btn ghost" id="suggest-close" type="button">Close</button>
     </dialog>
   </div>
@@ -523,6 +524,10 @@
   // 1) INTEREST FORM: paste the PUBLISHED Notion form link (Share form -> copy link).
   //    A workspace "Copy link" URL will NOT work, models would hit a login wall.
   const INTEREST_FORM_URL = "https://app.notion.com/p/3c9bc34c2ab2802883dbc251c57156f8";
+
+  // 1b) SUGGEST FORM: the published Notion form for "Suggest a creator".
+  //     Leave empty and the button explains the form is not live yet.
+  const SUGGEST_FORM_URL = "";
 
   // 2) ROSTER: the page renders whatever is in roster.json, which is generated from the
   //    Notion Models DB at BUILD time (see build-roster.mjs). Change someone's Status away
@@ -763,11 +768,15 @@
       btn.addEventListener("click",toggle);
       scrim.addEventListener("click",toggle);
       label();
-      // "Suggest a creator" opens a small dialog rather than a form
+      // "Suggest a creator" goes straight to the form once it exists; until
+      // then the dialog says so rather than dead-ending on a broken link.
       const sug=document.getElementById("buddy-suggest"),
             modal=document.getElementById("suggest-modal");
       if(sug && modal){
-        sug.addEventListener("click",()=>modal.showModal?.() ?? (modal.open=true));
+        sug.addEventListener("click",()=>{
+          if(SUGGEST_FORM_URL){ window.open(SUGGEST_FORM_URL,"_blank","noopener"); return; }
+          modal.showModal?.() ?? (modal.open=true);
+        });
         document.getElementById("suggest-close").addEventListener("click",()=>modal.close());
         // click outside the panel closes it; Esc is native to <dialog>
         modal.addEventListener("click",e=>{ if(e.target===modal) modal.close(); });
