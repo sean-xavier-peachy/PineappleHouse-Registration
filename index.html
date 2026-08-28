@@ -142,6 +142,7 @@
   }
   .hero-intro p+p{margin-top:12px}
   .hero-intro:empty{display:none}
+  .hero-intro strong{color:var(--cyan);font-weight:800}
 
   /* ---------- PINEAPPLE BAND ---------- */
   #pineapple-band{padding-block:clamp(24px,3.4vw,44px)}
@@ -168,7 +169,13 @@
   .pband-copy p{margin:0}
   .pband-copy p+p{margin-top:14px}
   .pband-copy strong{color:var(--ink);font-weight:700}
-  @media(max-width:560px){ .pband-stat{padding-left:0;border-left:0} }
+  /* the optional stat is dropped the moment the row would wrap (see the
+     measure/apply pair in the script), and always on small screens */
+  .pband-head.hide-opt .pband-stat.opt{display:none}
+  @media(max-width:560px){
+    .pband-stat{padding-left:0;border-left:0}
+    .pband-stat.opt{display:none}
+  }
 
   /* ---------- HOUSE CAROUSEL ---------- */
   .carousel{position:relative;margin-top:clamp(24px,4vw,40px)}
@@ -376,10 +383,14 @@
           <span class="n">24/7 Therapy</span>
           <span class="l">Free mental-health services</span>
         </div>
+        <div class="pband-stat opt">
+          <span class="n">$100K+</span>
+          <span class="l">Raised</span>
+        </div>
       </div>
       <div class="pband-copy" id="pband-copy">
         <p>Come early, Oct 9&ndash;11, for the Mx. Pineapple Palm Springs Takeover: the industry&rsquo;s weekend of cabaret, drag, and adult entertainment, and the reason everyone&rsquo;s in the desert.</p>
-        <p>It&rsquo;s a fundraiser for Pineapple Support, the free, 24/7 mental-health and therapy service for people working in the adult industry. <strong>Being here is the fun part; funding what keeps our community well is the point.</strong> &darr;</p>
+        <p>It&rsquo;s a fundraiser for Pineapple Support, the free, 24/7 mental-health and therapy service for people in the adult industry. <strong>Being here is the fun part; funding what keeps our community well is the point.</strong> &darr;</p>
       </div>
     </div>
   </div>
@@ -495,6 +506,23 @@
     .then(r=>r.ok?r.json():Promise.reject())
     .then(d=>renderRoster(Array.isArray(d)?d:(d.roster||[])))
     .catch(()=>renderRoster(SAMPLE_ROSTER));
+
+  // ---- Pineapple band: drop the optional stat rather than let the row wrap ----
+  (function(){
+    const head=document.querySelector(".pband-head");
+    if(!head||!head.querySelector(".pband-stat.opt")) return;
+    let need=0;
+    function measure(){
+      head.classList.remove("hide-opt");                 // measure at natural width
+      const gap=parseFloat(getComputedStyle(head).columnGap)||0;
+      need=[...head.children].reduce((a,el,i)=>a+el.getBoundingClientRect().width+(i?gap:0),0);
+    }
+    function apply(){ head.classList.toggle("hide-opt", need > head.getBoundingClientRect().width+0.5); }
+    function refresh(){ measure(); apply(); }
+    refresh();
+    addEventListener("resize",()=>{ clearTimeout(head._t); head._t=setTimeout(refresh,120); });
+    if(document.fonts?.ready) document.fonts.ready.then(refresh);  // condensed face changes widths
+  })();
 
   // ---- sticky footer CTA: visible throughout, except over the in-flow CTA ----
   (function(){
