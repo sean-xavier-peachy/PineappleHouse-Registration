@@ -45,6 +45,7 @@ jobs:
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DB_ID: 32b9edf5a84b4ca3af236801c9f0ecdb
+          NOTION_INVITED_DB_ID: 3cabc34c2ab281afa377eb14ef11f92a
           BOOKED_STATUS: Booked
         run: node build-roster.mjs
 
@@ -53,6 +54,7 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html content.json _site/
+          [ -f invited.json ] && cp invited.json _site/ || true
           [ -f roster.json ] && cp roster.json _site/ || true
           [ -d assets ] && cp -r assets _site/ || true
           ls -la _site

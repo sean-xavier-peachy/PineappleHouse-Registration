@@ -202,18 +202,24 @@ async function fetchAll() {
   return pages;
 }
 
-async function downloadHeadshot(page) {
-  const files = readProp(page.properties, PROP.headshot);
-  const url = Array.isArray(files) ? files[0] : files;
+// Shared by the roster and the invited grid: pull an image local so the
+// deployed site never depends on an expiring Notion or Airtable URL.
+async function saveImage(url, key) {
   if (!url) return "";
   await mkdir(IMG_DIR, { recursive: true });
   const res = await fetch(url);
-  if (!res.ok) { console.warn(`  ! headshot download failed (${res.status}) for ${page.id}`); return ""; }
+  if (!res.ok) { console.warn(`  ! headshot download failed (${res.status}) for ${key}`); return ""; }
   const type = res.headers.get("content-type") || "";
   const ext  = (type.split("/")[1] || "jpg").split(";")[0].replace("jpeg", "jpg");
-  const path = `${IMG_DIR}/${page.id.replace(/-/g, "")}.${ext}`;
+  const path = `${IMG_DIR}/${key}.${ext}`;
   await writeFile(path, Buffer.from(await res.arrayBuffer()));
   return path;
+}
+
+async function downloadHeadshot(page) {
+  const files = readProp(page.properties, PROP.headshot);
+  const url = Array.isArray(files) ? files[0] : files;
+  return saveImage(url, page.id.replace(/-/g, ""));
 }
 
 // --- main ------------------------------------------------------------------
@@ -245,3 +251,77 @@ await writeFile(OUT_JSON, JSON.stringify(roster, null, 2));
 console.log(`Wrote ${OUT_JSON} with ${roster.length} performers.`);
 const noShot = roster.filter(r => !r.headshot).length;
 if (noShot) console.log(`Note: ${noShot} have no headshot — the site shows their initials in the gradient ring until one is added.`);
+
+// ===========================================================================
+// INVITED GRID  ->  invited.json
+// ---------------------------------------------------------------------------
+// Reads the Notion "Invited (ballot)" database, seeded once from the Airtable
+// ballot. Keeping it in Notion means the build needs no Airtable credentials
+// and admins curate invitees in the same place as everything else.
+//
+// Votes set the order and are deliberately NOT published. Untick Include in
+// Notion to drop someone from the site.
+// ===========================================================================
+const INVITED_DB  = process.env.NOTION_INVITED_DB_ID;
+const OUT_INVITED = "invited.json";
+
+async function buildInvited(bookedNames) {
+  const norm = s => (s ?? "").toString().trim().replace(/\s+/g, " ").toLowerCase();
+  const empty = async (msg) => {
+    console.log(`\n${msg}`);
+    await writeFile(OUT_INVITED, JSON.stringify({ count: 0, invited: [] }, null, 2));
+  };
+  if (!INVITED_DB) return empty(`No NOTION_INVITED_DB_ID, skipping the invited grid.`);
+
+  let pages = [];
+  try {
+    let cursor;
+    do {
+      const body = { page_size: 100, ...(cursor ? { start_cursor: cursor } : {}) };
+      const r = await fetch(`https://api.notion.com/v1/databases/${INVITED_DB}/query`,
+        { method: "POST", headers: HDR, body: JSON.stringify(body) });
+      if (!r.ok) throw new Error(`Notion ${r.status}: ${(await r.json()).message}`);
+      const d = await r.json(); pages.push(...d.results); cursor = d.has_more ? d.next_cursor : null;
+    } while (cursor);
+  } catch (e) {
+    return empty(`Invited grid skipped: ${e.message}`);   // never fail the site build
+  }
+
+  // Booked performers headline "Who's in the house"; repeating them here reads
+  // as noise, so they are excluded from the invited grid.
+  const booked = new Set((bookedNames || []).map(norm));
+  let skippedBooked = 0, excluded = 0;
+  const picked = [];
+  for (const pg of pages) {
+    const f = pg.properties;
+    const name = readProp(f, "Name") || "";
+    if (!name) continue;
+    if (f.Include && readProp(f, "Include") === false) { excluded++; continue; }
+    const votes = Number(readProp(f, "Votes")) || 0;
+    if (votes < 1) continue;
+    if (booked.has(norm(name))) { skippedBooked++; continue; }
+    picked.push({ id: pg.id.replace(/-/g, ""), name, votes,
+      shot: readProp(f, "Headshot") || "",
+      ig:  readProp(f, "Instagram"), x: readProp(f, "X"),
+      of:  readProp(f, "OnlyFans"),  jff: readProp(f, "JustForFans") });
+  }
+
+  // most votes first; name A-Z breaks ties so builds are deterministic
+  picked.sort((a, b) => b.votes - a.votes || a.name.localeCompare(b.name));
+
+  const out = [];
+  for (const p of picked) {
+    out.push({
+      name: p.name,
+      headshot: await saveImage(p.shot, `inv-${p.id}`),
+      ig:  profileUrl(p.ig, "https://instagram.com/"),
+      x:   profileUrl(p.x,  "https://x.com/"),
+      of:  asUrl(p.of),
+      jff: asUrl(p.jff),
+    });
+  }
+  await writeFile(OUT_INVITED, JSON.stringify({ count: out.length, invited: out }, null, 2));
+  console.log(`\nWrote ${OUT_INVITED}: ${out.length} invited (${skippedBooked} already booked, ${excluded} excluded in Notion).`);
+}
+
+await buildInvited(roster.map(r => r.name));

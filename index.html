@@ -268,6 +268,32 @@
   .who.tbd .avatar{background:var(--line)}
   .who.tbd .nm{color:var(--muted)}
 
+  /* ---------- INVITED GRID (have a buddy) ---------- */
+  /* deliberately quieter than the booked roster: dimmer, smaller, no number */
+  #buddies[hidden]{display:none}
+  .roster.invited{opacity:.58}
+  .roster.invited .avatar{width:94px;height:94px}
+  .roster.invited .who .nm{font-size:17px;margin-top:11px}
+  .who .tag-invited{margin-top:6px;font-family:"Inter";font-weight:700;font-size:10px;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--muted-2)}
+  /* one row shows, the next is clipped so it reads as a peek */
+  .buddy-wrap{position:relative;overflow:hidden;margin-top:26px;
+    max-height:var(--buddy-peek,220px);
+    transition:max-height .45s cubic-bezier(.4,0,.2,1)}
+  .buddy-wrap.open{max-height:var(--buddy-full,4000px)}
+  .buddy-scrim{position:absolute;left:0;right:0;bottom:0;height:104px;
+    border:0;padding:0;cursor:pointer;display:block;
+    background:linear-gradient(180deg,rgba(7,8,14,0),var(--bg) 84%)}
+  .buddy-wrap.open .buddy-scrim{display:none}
+  .buddy-actions{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:20px}
+  .buddy-actions .btn.ghost{background:transparent;border:1px solid var(--line);
+    color:var(--ink);box-shadow:none;font-size:16px;padding:12px 26px;cursor:pointer}
+  .buddy-actions .btn.ghost:hover{border-color:var(--cyan);filter:none}
+  .buddy-cta{color:var(--muted);font-size:14px;text-decoration:none;
+    border-bottom:1px solid transparent;transition:color .15s,border-color .15s}
+  .buddy-cta:hover{color:var(--cyan);border-color:var(--cyan)}
+  @media(prefers-reduced-motion:reduce){.buddy-wrap{transition:none}}
+
   /* ---------- CTA ---------- */
   /* the CTA sits between two sections, keep it tight so it reads as a break, not a gap */
   #claim{padding-block:clamp(14px,2vw,26px)}
@@ -422,6 +448,23 @@
     <div class="sec-head"><span class="idx">03</span><h2>Who's in the house</h2></div>
     <p class="note">Confirmed creators. Deposit locks your headshot in, and the roster grows as spots fill.</p>
     <div class="roster" id="roster-grid" style="margin-top:30px"><!-- rendered from data --></div>
+  </div>
+</section>
+
+<!-- ===== invited grid · hidden until invited.json has rows ===== -->
+<section id="buddies" style="padding-top:0" hidden>
+  <div class="wrap">
+    <div class="sec-head"><h2>Have a buddy?</h2></div>
+    <p class="note">These creators are invited. See someone you&rsquo;d love to shoot with? Tell them to reach out, or put us in touch. The best houses are built on who you bring.</p>
+    <p class="note" id="buddy-more" hidden style="margin-top:12px">Creators we&rsquo;re in conversation with for the house. Nothing&rsquo;s locked, so if there&rsquo;s someone here you want in the room with you, nudge them, or let us know and we&rsquo;ll follow up. Filling the house with people who already click makes the whole week better.</p>
+    <div class="buddy-wrap" id="buddy-wrap">
+      <div class="roster invited" id="buddy-grid"></div>
+      <button class="buddy-scrim" id="buddy-scrim" type="button" tabindex="-1" aria-hidden="true"></button>
+    </div>
+    <div class="buddy-actions">
+      <button class="btn ghost" id="buddy-toggle" type="button" aria-expanded="false" aria-controls="buddy-wrap"></button>
+      <a class="buddy-cta" id="buddy-suggest" href="#">Someone missing? Suggest a creator &rarr;</a>
+    </div>
   </div>
 </section>
 
@@ -651,6 +694,61 @@
       if(pb && hl?.detail?.length) pb.innerHTML=hl.detail.map(t=>`<p>${t}</p>`).join("");
     })
     .catch(()=>{ /* content.json absent, sections stay empty, rest of page works */ });
+
+  // ---- invited grid: presentation only, invited.json is already filtered and ordered ----
+  fetch("invited.json",{cache:"no-store"})
+    .then(r=>r.ok?r.json():Promise.reject())
+    .then(d=>{
+      if(!d.count || !d.invited?.length) return;          // section stays hidden
+      const sec=document.getElementById("buddies"),
+            grid=document.getElementById("buddy-grid"),
+            wrap=document.getElementById("buddy-wrap"),
+            more=document.getElementById("buddy-more"),
+            btn=document.getElementById("buddy-toggle"),
+            scrim=document.getElementById("buddy-scrim");
+      grid.innerHTML=d.invited.map(m=>{
+        const face=m.headshot?`<img src="${m.headshot}" alt="${m.name}" loading="lazy" decoding="async">`
+                             :`<span>${initials(m.name)}</span>`;
+        const soc=[socLink("IG",m.ig),socLink("X",m.x),socLink("OF",m.of),socLink("JFF",m.jff)]
+                   .filter(Boolean).join("");
+        return `<div class="who"><div class="avatar">${face}</div>`+
+               `<div class="nm">${m.name}</div><div class="tag-invited">Invited</div>`+
+               (soc?`<div class="soc">${soc}</div>`:"")+`</div>`;
+      }).join("");
+      sec.hidden=false;
+
+      // peek height = one row plus a third of the next, so the cut is legible
+      let t;
+      function measure(){
+        const first=grid.firstElementChild; if(!first) return;
+        const rowH=first.getBoundingClientRect().height;
+        const gap=parseFloat(getComputedStyle(grid).rowGap)||0;
+        wrap.style.setProperty("--buddy-peek",Math.round(rowH+gap+rowH*0.34)+"px");
+        wrap.style.setProperty("--buddy-full",Math.ceil(grid.scrollHeight+8)+"px");
+      }
+      measure();
+      addEventListener("resize",()=>{clearTimeout(t);t=setTimeout(measure,150);});
+      if(document.fonts?.ready) document.fonts.ready.then(measure);
+
+      function label(){
+        const open=wrap.classList.contains("open");
+        btn.textContent=open?"Show less \u2191":`See all invited (${d.count}) \u2193`;
+      }
+      function toggle(){
+        const open=!wrap.classList.contains("open");
+        measure();
+        wrap.classList.toggle("open",open);
+        btn.setAttribute("aria-expanded",String(open));
+        more.hidden=!open;
+        label();
+      }
+      btn.addEventListener("click",toggle);
+      scrim.addEventListener("click",toggle);
+      label();
+      const sug=document.getElementById("buddy-suggest");
+      if(INTEREST_FORM_URL){ sug.href=INTEREST_FORM_URL; sug.target="_blank"; sug.rel="noopener"; }
+    })
+    .catch(()=>{ /* no invited.json, section stays hidden */ });
 
   // wire the CTA to the interest form
   const cta = document.getElementById("interest-cta");

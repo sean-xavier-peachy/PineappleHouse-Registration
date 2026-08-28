@@ -19,4 +19,5 @@ BUILD-NOTES.md
 
 # Build outputs — regenerated from Notion by the publish workflow
 roster.json
+invited.json
 assets/headshots/
