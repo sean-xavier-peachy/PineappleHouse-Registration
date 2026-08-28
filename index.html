@@ -69,6 +69,19 @@
   .xmark{width:clamp(52px,9vw,92px);flex:none;filter:drop-shadow(0 0 18px rgba(162,77,255,.45))}
 
   /* ---------- PHOTO GRID ---------- */
+  /* ---------- HERO INTRO (from Notion) ---------- */
+  .hero-intro{
+    margin-top:clamp(20px,3vw,30px);padding-left:18px;
+    border-left:2px solid var(--cyan);
+    border-image:linear-gradient(180deg,var(--cyan),var(--purple)) 1;
+  }
+  .hero-intro p{
+    margin:0;max-width:72ch;color:#cfd3e4;
+    font-size:clamp(15px,1.55vw,18px);line-height:1.68;
+  }
+  .hero-intro p+p{margin-top:12px}
+  .hero-intro:empty{display:none}
+
   /* ---------- HOUSE CAROUSEL ---------- */
   .carousel{position:relative;margin-top:clamp(24px,4vw,40px)}
   .car-track{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;
@@ -221,6 +234,9 @@
         <line x1="80" y1="20" x2="22" y2="80" stroke="url(#xg)" stroke-width="15" stroke-linecap="round"/>
       </svg>
     </div>
+
+    <!-- intro copy, rendered from Notion -->
+    <div class="hero-intro" id="hero-intro"></div>
 
     <!-- house photo carousel -->
     <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Photos of the house">
@@ -435,6 +451,8 @@
       post.innerHTML = mid.map(s=>sectionHTML(s,++n,null)).join("");
       tail.innerHTML = sectionHTML(last,++n,null);
       // hero copy follows Notion too
+      const hi=document.getElementById("hero-intro");
+      if(hi && d.intro?.length) hi.innerHTML=d.intro.map(t=>`<p>${t}</p>`).join("");
       if(d.hero?.eyebrow) document.querySelector(".eyebrow").textContent=d.hero.eyebrow;
       if(d.hero?.meta?.length) document.querySelector(".sub").innerHTML=
         d.hero.meta.map((m,i)=>(i===0||i===d.hero.meta.length-1)?`<b>${m}</b>`:m).join(" · ");

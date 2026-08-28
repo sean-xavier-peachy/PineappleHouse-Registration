@@ -10,15 +10,14 @@
     ]
   },
   "intro": [
-    "Welcome! Everything you need to know before you commit and before you arrive is right here. Please read it all — the important dates and the testing window matter.",
-    "A fully gated, resort-style estate — a deep pool with fountains, spa, sauna, cold plunge, gym, chef's kitchen, and lush grounds. This is where we'll live and shoot for the week."
+    "Welcome, and get excited. You'll be creating at a fully gated resort estate, with a deep pool and fountains, spa, sauna, cold plunge, gym, chef's kitchen, and lush grounds. This is where we'll live and shoot for the week."
   ],
   "sections": [
     {
       "emoji": "🛏️",
       "title": "Rooms & buy-in",
       "intro": [
-        "Your spot is a per-head buy-in that covers your bed for the full run. Rates vary by room — pick your tier and reserve early, since rooms fill as they're confirmed."
+        "Your spot is a per-head buy-in that covers your bed for the full run. Rates vary by room. Pick your tier and reserve early, since rooms fill as they're confirmed."
       ],
       "groups": [],
       "callouts": [],
@@ -32,7 +31,7 @@
         "rows": [
           [
             "Bedroom 1",
-            "King (Primary suite)",
+            "Primary King",
             "2",
             "$900"
           ],
@@ -90,11 +89,11 @@
             },
             {
               "type": "line",
-              "html": "A private chef on site cooking 3 meals a day — breakfast, lunch, and dinner"
+              "html": "A private chef on site cooking 3 meals a day"
             },
             {
               "type": "line",
-              "html": "Full access to the estate: resort pool, spa, hot sauna, cold plunge, gym, and grounds"
+              "html": "Pool, spa, hot sauna, cold plunge, gym"
             }
           ]
         },
@@ -104,7 +103,7 @@
           "items": [
             {
               "type": "line",
-              "html": "Participation in the collab shoots across the run"
+              "html": "Dedicated videographers for filming"
             },
             {
               "type": "line",
@@ -112,7 +111,7 @@
             },
             {
               "type": "line",
-              "html": "Cross-promotion across the network"
+              "html": "Cross-promotion across the Ducati Studios network"
             }
           ]
         },
@@ -149,27 +148,23 @@
           "items": [
             {
               "type": "line",
-              "html": "Deposit (50%) — due to reserve your spot"
+              "html": "OPEN NOW: Deposit (50%) to reserve your spot"
             },
             {
               "type": "line",
-              "html": "Final payment (remaining 50%) — due Sept 14"
+              "html": "Sept 14th: Final payment due (remaining 50%)"
             },
             {
               "type": "line",
-              "html": "Testing — your test must be dated within 12 days of arrival, i.e. Sept 30 or later"
+              "html": "Sept 30th or later: Testing - must be dated within 12 days of arrival"
             },
             {
               "type": "line",
-              "html": "Arrive — Monday, Oct 12, 7–10pm PDT"
+              "html": "Oct 12th 7pm: Arrival"
             },
             {
               "type": "line",
-              "html": "Checkout — Friday, Oct 16"
-            },
-            {
-              "type": "line",
-              "html": "Falcon studio scenes on site — Oct 13–15"
+              "html": "Oct 16th: Checkout"
             }
           ]
         },
@@ -189,14 +184,14 @@
             },
             {
               "type": "toggle",
-              "html": "Get tested — within 12 days of arrival",
+              "html": "Get tested (within 12 days of arrival)",
               "detail": [
                 "Your test must be dated within 12 days of arrival (Oct 12), i.e. Sept 30 or later. Get tested in time to receive your results and, if needed, get treated — we will ask for results. Ideally, test around Sept 30 – Oct 2 to leave a buffer for treatment."
               ]
             },
             {
               "type": "toggle",
-              "html": "Set up OnlyFans + JustForFans accounts",
+              "html": "OnlyFans + JustForFans Verified",
               "detail": [
                 "You'll need both, even if you don't actively use one. This lets us tag you in posts and avoid age-verification issues, so set these up before the house."
               ]
@@ -223,23 +218,23 @@
           "items": [
             {
               "type": "line",
-              "html": "Address — we'll send the home's address as soon as it's released from Airbnb, often not until the day before arrival"
+              "html": "Address: we'll send the home's address as soon as it's released from Airbnb."
             },
             {
               "type": "line",
-              "html": "Airport — PSP (Palm Springs)"
+              "html": "Airport: PSP (Palm Springs)"
             },
             {
               "type": "line",
-              "html": "Arrival — Monday, Oct 12, 7–10pm PDT"
+              "html": "Arrival: Monday, Oct 12, 7–10pm PDT"
             },
             {
               "type": "line",
-              "html": "Carpool — coordination happens after the guest list is finalized"
+              "html": "Carpool: coordination happens after the guest list is finalized"
             },
             {
               "type": "line",
-              "html": "Ducati does not cover transportation — travel to and from Palm Springs is on you"
+              "html": "We do not cover transportation — travel to and from Palm Springs is on you"
             }
           ]
         }
@@ -302,7 +297,7 @@
             },
             {
               "type": "line",
-              "html": "Max 15 referral slots"
+              "html": "Max 5 referral slots"
             },
             {
               "type": "line",
@@ -362,7 +357,7 @@
             },
             {
               "type": "line",
-              "html": "Respect consent and boundaries — ask before you touch, hug, etc."
+              "html": "Respect consent and boundaries: ask before you touch, hug, etc."
             },
             {
               "type": "line",
@@ -415,7 +410,7 @@
             },
             {
               "type": "line",
-              "html": "Want more? Additional scenes can be shot each day — just ask backup production members (we'll cover this in the house meeting)"
+              "html": "Want more? Additional scenes can be shot each day, just ask backup production members (we'll cover this in the house meeting)"
             },
             {
               "type": "line",
@@ -481,7 +476,7 @@
             },
             {
               "type": "note",
-              "html": "We have 3 rooms available off-site for performers who'd like to come in early and take part. Want to add on the Pineapple weekend? Let us know and we'll share the details."
+              "html": "Want to add on the Pineapple weekend? Let us know and we'll share the details."
             },
             {
               "type": "note",
@@ -498,7 +493,7 @@
     {
       "label": "Bedroom 1",
       "price": "$900",
-      "bed": "King (Primary suite) · sleeps 2"
+      "bed": "Primary King · sleeps 2"
     },
     {
       "label": "Bedrooms 2–5",
