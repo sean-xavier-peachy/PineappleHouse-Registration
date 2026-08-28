@@ -45,6 +45,7 @@ jobs:
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DB_ID: 32b9edf5a84b4ca3af236801c9f0ecdb
+          NOTION_ROOMING_DB_ID: 188fe2791f9646f099ae00ec4b76ebcd
           BOOKED_STATUS: Booked
         run: node build-roster.mjs
 

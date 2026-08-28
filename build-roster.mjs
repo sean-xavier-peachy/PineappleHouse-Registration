@@ -268,19 +268,21 @@ if (noShot) console.log(`Note: ${noShot} have no headshot, so the site shows the
 // A bed is counted as taken when a BOOKED performer has a room set; Interested
 // and Deposit pending do not hold a bed.
 const OUT_ROOMS   = "rooms.json";
-const ROOMING_DB  = process.env.NOTION_ROOMING_DB_ID || "";
-const ROOM_OCCUPANT = process.env.ROOMING_OCCUPANT_FIELD || "Model";
-const ROOM_TIER     = process.env.ROOMING_TIER_FIELD     || "Room";
+// The Rooming Roster holds one row per bed: Buy-in keys it to a price tier and
+// Booking Status is the state. A bed counts as free only when it says
+// Available, so a Held bed is not offered on the site.
+const ROOMING_DB = process.env.NOTION_ROOMING_DB_ID || "188fe2791f9646f099ae00ec4b76ebcd";
+const ROOM_PRICE  = "Buy-in";
+const ROOM_STATE  = "Booking Status";
 try {
   const { readFile } = await import("node:fs/promises");
   const content = JSON.parse(await readFile("content.json", "utf8"));
   const tiers = content.tiers || [];
   if (!tiers.length) throw new Error("content.json has no tiers");
 
-  // Bed assignments come from the Rooming Roster database, which holds one row
-  // per bed. Until it is shared with the integration we cannot read occupancy,
-  // so every bed reports available rather than guessing from another field.
-  const taken = new Map();
+  // Capacity and occupancy both come from the Rooming Roster, one row per bed,
+  // so adding or removing a bed slot there flows straight through to the site.
+  const beds = new Map();   // price -> { capacity, available }
   if (!ROOMING_DB) {
     console.log("  Rooming Roster not configured, so all beds report available.");
   } else {
@@ -291,20 +293,28 @@ try {
       if (!r.ok) throw new Error(`Rooming Roster ${r.status}: ${(await r.json()).message}`);
       const d = await r.json();
       for (const bed of d.results) {
-        // a bed counts as taken when it names an occupant
-        const who = readProp(bed.properties, ROOM_OCCUPANT);
-        if (!who || (Array.isArray(who) && !who.length)) continue;
-        const key = (String(readProp(bed.properties, ROOM_TIER) ?? "").match(/\$[\d,]+/) || [])[0];
-        if (key) taken.set(key, (taken.get(key) || 0) + 1);
+        const amount = Number(readProp(bed.properties, ROOM_PRICE));
+        if (!amount) continue;
+        const key = "$" + amount;
+        const row = beds.get(key) || { capacity: 0, available: 0 };
+        row.capacity++;
+        if (String(readProp(bed.properties, ROOM_STATE) ?? "").trim().toLowerCase() === "available") row.available++;
+        beds.set(key, row);
       }
       cursor = d.has_more ? d.next_cursor : null;
     } while (cursor);
+    console.log(`  Rooming Roster: ${[...beds.values()].reduce((a,b)=>a+b.capacity,0)} bed slots.`);
   }
 
   const rooms = tiers.map(t => {
-    const used = taken.get(t.price) || 0;
-    const available = Math.max(0, (t.capacity || 0) - used);
-    return { price: t.price, capacity: t.capacity || 0, taken: used, available, soldOut: available === 0 };
+    const bed = beds.get(t.price);
+    // Fall back to the guide table's rooms x sleeps when the Rooming Roster is
+    // unreachable, so the cards still render rather than showing nothing.
+    const capacity  = bed ? bed.capacity  : (t.capacity || 0);
+    const available = bed ? bed.available : (t.capacity || 0);
+    if (bed && t.capacity && bed.capacity !== t.capacity)
+      console.warn(`  ! ${t.price}: Rooming Roster has ${bed.capacity} beds, the guide table says ${t.capacity}`);
+    return { price: t.price, capacity, taken: capacity - available, available, soldOut: available === 0 };
   });
   await writeFile(OUT_ROOMS, JSON.stringify({ rooms }, null, 2));
   const free = rooms.reduce((a, r) => a + r.available, 0);
