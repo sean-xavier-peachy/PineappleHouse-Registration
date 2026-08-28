@@ -69,34 +69,29 @@
   .xmark{width:clamp(52px,9vw,92px);flex:none;filter:drop-shadow(0 0 18px rgba(162,77,255,.45))}
 
   /* ---------- PHOTO GRID ---------- */
-  /* ---------- STICKY CLAIM BAR ---------- */
-  #claim-sentinel{height:1px;margin:0;padding:0}
-  .claim-bar{
-    position:sticky;top:0;z-index:60;padding:0;
-    background:rgba(7,8,14,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  /* ---------- STICKY FOOTER CTA DOCK ---------- */
+  .cta-dock{
+    position:fixed;left:0;right:0;bottom:0;z-index:70;
+    padding-top:12px;padding-bottom:calc(12px + env(safe-area-inset-bottom));
+    background:rgba(7,8,14,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);
+    transform:translateY(115%);transition:transform .3s cubic-bezier(.4,0,.2,1);
   }
-  /* the cyan seam reads as the page's primary action */
-  .claim-bar::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;
-    background:linear-gradient(90deg,var(--cyan),var(--purple),var(--magenta));opacity:.9}
-  .claim-bar .wrap{padding-block:clamp(16px,2.2vw,24px);transition:padding-block .18s ease}
-  .cta-row{display:flex;align-items:center;gap:clamp(16px,3vw,36px);flex-wrap:wrap}
-  .cta-copy{flex:1 1 340px;min-width:0}
-  .cta-row h2{margin:0;font-size:clamp(24px,3.4vw,40px);font-style:italic;transition:font-size .18s ease}
-  .cta-row .desc{margin:8px 0 0;color:var(--muted);font-size:14.5px;line-height:1.55;max-width:60ch}
-  .cta-act{flex:none;display:flex;flex-direction:column;align-items:flex-start;gap:7px}
-  .cta-row .fine{margin:0;font-size:12px;color:var(--muted-2);letter-spacing:.02em}
-  /* collapse to a toolbar once pinned */
-  .claim-bar.is-stuck .wrap{padding-block:10px}
-  .claim-bar.is-stuck .desc,
-  .claim-bar.is-stuck .fine{display:none}
-  .claim-bar.is-stuck h2{font-size:clamp(18px,2.2vw,24px)}
-  .claim-bar.is-stuck .btn{padding:11px 24px;font-size:16px}
-  @media(max-width:640px){
-    .cta-row{gap:14px}
-    .cta-act{width:100%}
-    .claim-bar.is-stuck h2{font-size:17px}
+  .cta-dock::before{content:"";position:absolute;left:0;right:0;top:-1px;height:2px;
+    background:linear-gradient(90deg,var(--cyan),var(--purple),var(--magenta))}
+  .cta-dock.show{transform:translateY(0)}
+  .dock-row{display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .dock-title{font-family:"Saira Condensed";font-weight:800;font-style:italic;
+    text-transform:uppercase;letter-spacing:.02em;font-size:clamp(15px,2vw,23px);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cta-dock .btn{flex:none;padding:11px 26px;font-size:16px}
+  @media(max-width:560px){
+    .dock-title{font-size:14px}
+    .cta-dock .btn{padding:10px 16px;font-size:13.5px;letter-spacing:.04em}
   }
+  @media(prefers-reduced-motion:reduce){.cta-dock{transition:none}}
+  /* clearance so the dock never covers the last of the page */
+  body{padding-bottom:calc(96px + env(safe-area-inset-bottom))} /* fallback; JS measures the dock */
 
   /* ---------- HERO INTRO (from Notion) ---------- */
   .hero-intro{
@@ -286,39 +281,28 @@
       <div class="car-dots" id="car-dots"></div>
     </div>
 
+    <!-- stat strip -->
+    <div class="stats">
+    <div class="stat"><div class="n">7 Suites</div><div class="l">Sleeps the roster</div></div>
+    <div class="stat"><div class="n">Chef</div><div class="l">3 meals a day</div></div>
+    <div class="stat"><div class="n">Gated</div><div class="l">Fully private estate</div></div>
+    <div class="stat"><div class="n">Pool · Gym</div><div class="l">Sauna · spa · plunge</div></div>
+    </div>
   </div>
 </header>
 
-<!-- sentinel: tells us when the bar has pinned -->
-<div id="claim-sentinel" aria-hidden="true"></div>
-
-<!-- ===================== STICKY CTA ===================== -->
-<section id="claim" class="claim-bar">
+<!-- ===================== CTA ===================== -->
+<section id="claim">
   <div class="wrap">
-    <div class="cta-row">
-      <div class="cta-copy">
-        <h2>Let's put you <span class="accent-cyan">in the house</span></h2>
-        <p class="desc">Tell us you're interested and how to reach you. To lock a spot, reach out and place your 50% deposit — once it clears, your headshot goes up on the roster.</p>
-      </div>
-      <div class="cta-act">
-        <a class="btn" id="interest-cta" href="#" aria-disabled="true">Claim your spot</a>
-        <p class="fine">Booking &amp; deposit handled directly with the Ducati team</p>
-      </div>
+    <div class="cta">
+      <h2>Let's put you <span class="accent-cyan">in the house</span></h2>
+      <p>Tell us you're interested and how to reach you. To lock a spot, reach out and place your 50% deposit — once it clears, your headshot goes up on the roster.</p>
+      <a class="btn" id="interest-cta" href="#" aria-disabled="true">Claim your spot</a>
+      <p class="fine">Interest form · booking &amp; deposit handled directly with the Ducati team</p>
     </div>
   </div>
 </section>
 
-<!-- ===================== STAT STRIP ===================== -->
-<section id="stats-strip" style="padding-top:clamp(30px,4vw,48px);padding-bottom:0">
-  <div class="wrap">
-    <div class="stats">
-      <div class="stat"><div class="n">7 Suites</div><div class="l">Sleeps the roster</div></div>
-      <div class="stat"><div class="n">Chef</div><div class="l">3 meals a day</div></div>
-      <div class="stat"><div class="n">Gated</div><div class="l">Fully private estate</div></div>
-      <div class="stat"><div class="n">Pool · Gym</div><div class="l">Sauna · spa · plunge</div></div>
-    </div>
-  </div>
-</section>
 
 <!-- ===== 01/02 · rendered from Notion (build-content.mjs) ===== -->
 <div id="sec-pre"></div>
@@ -348,6 +332,16 @@
     <div>Palm Springs · Oct 12–16, 2026 &nbsp;·&nbsp; In support of Pineapple Support</div>
   </div>
 </footer>
+
+<!-- sticky footer CTA — appears once the in-flow CTA scrolls away -->
+<div class="cta-dock" id="cta-dock" aria-hidden="true">
+  <div class="wrap">
+    <div class="dock-row">
+      <span class="dock-title">Let's put you <span class="accent-cyan">in the house</span></span>
+      <a class="btn" id="dock-cta" href="#" aria-disabled="true">Claim your spot</a>
+    </div>
+  </div>
+</div>
 
 <script>
   /* ============================================================
@@ -402,21 +396,26 @@
     .then(d=>renderRoster(Array.isArray(d)?d:(d.roster||[])))
     .catch(()=>renderRoster(SAMPLE_ROSTER));
 
-  // ---- sticky claim bar: compact once pinned ----
+  // ---- sticky footer CTA: appears once the in-flow CTA has scrolled past ----
   (function(){
-    const bar=document.getElementById("claim"), sent=document.getElementById("claim-sentinel");
-    if(!bar||!sent) return;
-    // Stuck once the sentinel has scrolled above the viewport. A scroll listener
-    // rather than IntersectionObserver: IO callbacks are throttled in background
-    // tabs, which left the bar expanded after a programmatic scroll.
+    const dock=document.getElementById("cta-dock"), inflow=document.getElementById("claim");
+    if(!dock||!inflow) return;
     let queued=false;
     function update(){
       queued=false;
-      bar.classList.toggle("is-stuck", sent.getBoundingClientRect().top < 0);
+      const past = inflow.getBoundingClientRect().bottom < 0;
+      dock.classList.toggle("show", past);
+      dock.setAttribute("aria-hidden", past ? "false" : "true");
     }
-    addEventListener("scroll",()=>{ if(!queued){queued=true;requestAnimationFrame(update);} },{passive:true});
-    addEventListener("resize",()=>{ if(!queued){queued=true;requestAnimationFrame(update);} });
-    update();
+    // Reserve exactly the dock's height so it never covers the footer — measured,
+    // because the row wraps to two lines on narrow screens.
+    function reserve(){
+      document.body.style.paddingBottom = (dock.offsetHeight + 28) + "px";
+    }
+    const tick=()=>{ if(!queued){queued=true;requestAnimationFrame(update);} };
+    addEventListener("scroll",tick,{passive:true});
+    addEventListener("resize",()=>{ reserve(); tick(); });
+    reserve(); update();
   })();
 
   // ---- house carousel ----
@@ -520,12 +519,17 @@
 
   // wire the CTA to the interest form
   const cta = document.getElementById("interest-cta");
+  const dockCta = document.getElementById("dock-cta");
   if(INTEREST_FORM_URL){
-    cta.href = INTEREST_FORM_URL; cta.target="_blank"; cta.rel="noopener";
-    cta.removeAttribute("aria-disabled");
+    for(const a of [cta, dockCta]){
+      if(!a) continue;
+      a.href = INTEREST_FORM_URL; a.target="_blank"; a.rel="noopener";
+      a.removeAttribute("aria-disabled");
+    }
   }else{
     cta.textContent = "Form link coming soon";
   }
 </script>
+
 </body>
 </html>
