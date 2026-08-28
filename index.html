@@ -69,6 +69,35 @@
   .xmark{width:clamp(52px,9vw,92px);flex:none;filter:drop-shadow(0 0 18px rgba(162,77,255,.45))}
 
   /* ---------- PHOTO GRID ---------- */
+  /* ---------- STICKY CLAIM BAR ---------- */
+  #claim-sentinel{height:1px;margin:0;padding:0}
+  .claim-bar{
+    position:sticky;top:0;z-index:60;padding:0;
+    background:rgba(7,8,14,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  }
+  /* the cyan seam reads as the page's primary action */
+  .claim-bar::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;
+    background:linear-gradient(90deg,var(--cyan),var(--purple),var(--magenta));opacity:.9}
+  .claim-bar .wrap{padding-block:clamp(16px,2.2vw,24px);transition:padding-block .18s ease}
+  .cta-row{display:flex;align-items:center;gap:clamp(16px,3vw,36px);flex-wrap:wrap}
+  .cta-copy{flex:1 1 340px;min-width:0}
+  .cta-row h2{margin:0;font-size:clamp(24px,3.4vw,40px);font-style:italic;transition:font-size .18s ease}
+  .cta-row .desc{margin:8px 0 0;color:var(--muted);font-size:14.5px;line-height:1.55;max-width:60ch}
+  .cta-act{flex:none;display:flex;flex-direction:column;align-items:flex-start;gap:7px}
+  .cta-row .fine{margin:0;font-size:12px;color:var(--muted-2);letter-spacing:.02em}
+  /* collapse to a toolbar once pinned */
+  .claim-bar.is-stuck .wrap{padding-block:10px}
+  .claim-bar.is-stuck .desc,
+  .claim-bar.is-stuck .fine{display:none}
+  .claim-bar.is-stuck h2{font-size:clamp(18px,2.2vw,24px)}
+  .claim-bar.is-stuck .btn{padding:11px 24px;font-size:16px}
+  @media(max-width:640px){
+    .cta-row{gap:14px}
+    .cta-act{width:100%}
+    .claim-bar.is-stuck h2{font-size:17px}
+  }
+
   /* ---------- HERO INTRO (from Notion) ---------- */
   .hero-intro{
     margin-top:clamp(20px,3vw,30px);padding-left:18px;
@@ -257,7 +286,31 @@
       <div class="car-dots" id="car-dots"></div>
     </div>
 
-    <!-- stat strip -->
+  </div>
+</header>
+
+<!-- sentinel: tells us when the bar has pinned -->
+<div id="claim-sentinel" aria-hidden="true"></div>
+
+<!-- ===================== STICKY CTA ===================== -->
+<section id="claim" class="claim-bar">
+  <div class="wrap">
+    <div class="cta-row">
+      <div class="cta-copy">
+        <h2>Let's put you <span class="accent-cyan">in the house</span></h2>
+        <p class="desc">Tell us you're interested and how to reach you. To lock a spot, reach out and place your 50% deposit — once it clears, your headshot goes up on the roster.</p>
+      </div>
+      <div class="cta-act">
+        <a class="btn" id="interest-cta" href="#" aria-disabled="true">Claim your spot</a>
+        <p class="fine">Booking &amp; deposit handled directly with the Ducati team</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STAT STRIP ===================== -->
+<section id="stats-strip" style="padding-top:clamp(30px,4vw,48px);padding-bottom:0">
+  <div class="wrap">
     <div class="stats">
       <div class="stat"><div class="n">7 Suites</div><div class="l">Sleeps the roster</div></div>
       <div class="stat"><div class="n">Chef</div><div class="l">3 meals a day</div></div>
@@ -265,7 +318,7 @@
       <div class="stat"><div class="n">Pool · Gym</div><div class="l">Sauna · spa · plunge</div></div>
     </div>
   </div>
-</header>
+</section>
 
 <!-- ===== 01/02 · rendered from Notion (build-content.mjs) ===== -->
 <div id="sec-pre"></div>
@@ -284,17 +337,6 @@
 <div id="sec-post"></div>
 
 
-<!-- ===================== CTA ===================== -->
-<section id="claim">
-  <div class="wrap">
-    <div class="cta">
-      <h2>Let's put you <span class="accent-cyan">in the house</span></h2>
-      <p>Tell us you're interested and how to reach you. To lock a spot, reach out and place your 50% deposit — once it clears, your headshot goes up on the roster.</p>
-      <a class="btn" id="interest-cta" href="#" aria-disabled="true">Claim your spot</a>
-      <p class="fine">Interest form · booking &amp; deposit handled directly with the Ducati team</p>
-    </div>
-  </div>
-</section>
 
 <!-- ===== 08 · rendered from Notion ===== -->
 <div id="sec-tail"></div>
@@ -359,6 +401,23 @@
     .then(r=>r.ok?r.json():Promise.reject())
     .then(d=>renderRoster(Array.isArray(d)?d:(d.roster||[])))
     .catch(()=>renderRoster(SAMPLE_ROSTER));
+
+  // ---- sticky claim bar: compact once pinned ----
+  (function(){
+    const bar=document.getElementById("claim"), sent=document.getElementById("claim-sentinel");
+    if(!bar||!sent) return;
+    // Stuck once the sentinel has scrolled above the viewport. A scroll listener
+    // rather than IntersectionObserver: IO callbacks are throttled in background
+    // tabs, which left the bar expanded after a programmatic scroll.
+    let queued=false;
+    function update(){
+      queued=false;
+      bar.classList.toggle("is-stuck", sent.getBoundingClientRect().top < 0);
+    }
+    addEventListener("scroll",()=>{ if(!queued){queued=true;requestAnimationFrame(update);} },{passive:true});
+    addEventListener("resize",()=>{ if(!queued){queued=true;requestAnimationFrame(update);} });
+    update();
+  })();
 
   // ---- house carousel ----
   (function(){
