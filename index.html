@@ -79,16 +79,26 @@
     border:1px solid var(--line);
   }
   .stat-pill .sep{color:var(--cyan);opacity:.9;font-weight:700}
-  /* 1 · pinned to the bottom of the carousel, clear of the dots */
+  /* 1 · pinned to the bottom of the carousel, clear of the dots.
+        Type matches .sec-head h2 exactly — same clamp, so it tracks the
+        section headings at every viewport width. Padding is in em so the
+        pill grows with the text rather than needing its own breakpoints. */
   .car-badge{position:absolute;left:50%;transform:translateX(-50%);z-index:4;
-    bottom:calc(21px + 16px);pointer-events:none}
+    bottom:calc(21px + 16px);pointer-events:none;max-width:calc(100% - 28px)}
+  .car-badge .stat-pill{
+    font-size:clamp(30px,5.5vw,58px);
+    padding:.26em .58em;gap:.34em;letter-spacing:.01em;
+  }
+  @media(max-width:600px){
+    .car-badge{bottom:calc(21px + 10px)}
+    .car-badge .stat-pill{font-size:clamp(17px,4.6vw,30px);padding:.3em .6em}
+  }
   /* 2 · under the CTA headline */
   .cta .stat-pill{margin-top:16px}
   /* 3 · left of the dock button */
   .dock-right{display:flex;align-items:center;gap:14px;flex:none}
   .dock-right .stat-pill{padding:9px 16px;font-size:15px}
   @media(max-width:820px){ .dock-right .stat-pill{display:none} }
-  @media(max-width:560px){ .car-badge .stat-pill{font-size:13px;padding:9px 14px} }
 
   /* ---------- STICKY FOOTER CTA DOCK ---------- */
   .cta-dock{
