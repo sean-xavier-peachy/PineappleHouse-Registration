@@ -159,12 +159,15 @@
   .pband-stat{display:flex;flex-direction:column;gap:5px;
     padding-left:clamp(18px,3vw,32px);border-left:1px solid var(--line)}
   .pband-stat .n{font-family:"Saira Condensed",sans-serif;font-weight:800;font-style:italic;
-    font-size:clamp(28px,4vw,46px);line-height:1;
+    font-size:clamp(22px,2.9vw,36px);line-height:1;white-space:nowrap;
     background:linear-gradient(90deg,var(--cyan),var(--purple));
     -webkit-background-clip:text;background-clip:text;color:transparent}
-  .pband-stat .l{font-family:"Inter";font-weight:700;font-size:11px;letter-spacing:.2em;
-    text-transform:uppercase;color:var(--muted-2)}
-  .pband-copy{margin:0;color:#cfd3e4;font-size:clamp(15px,1.5vw,17px);line-height:1.68;max-width:78ch}
+  .pband-stat .l{font-family:"Inter";font-weight:700;font-size:11px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted-2);white-space:nowrap}
+  .pband-copy{color:#cfd3e4;font-size:clamp(15px,1.5vw,17px);line-height:1.68;max-width:78ch}
+  .pband-copy p{margin:0}
+  .pband-copy p+p{margin-top:14px}
+  .pband-copy strong{color:var(--ink);font-weight:700}
   @media(max-width:560px){ .pband-stat{padding-left:0;border-left:0} }
 
   /* ---------- HOUSE CAROUSEL ---------- */
@@ -370,11 +373,14 @@
         <img class="ps-logo" src="assets/img/pineapple-support.svg" alt="Pineapple Support"
              width="340" height="156" decoding="async">
         <div class="pband-stat">
-          <span class="n">$100K+</span>
-          <span class="l">Raised</span>
+          <span class="n">24/7 Therapy</span>
+          <span class="l">Free mental-health services</span>
         </div>
       </div>
-      <p class="pband-copy" id="pband-copy">Come early, Oct 9&ndash;11, for the Mx. Pineapple Palm Springs Takeover: the industry&rsquo;s weekend of cabaret, drag, and adult entertainment, and the reason everyone&rsquo;s in the desert. It&rsquo;s a fundraiser for Pineapple Support, the free, 24/7 mental-health and therapy service for people working in the adult industry. Being here is the fun part; funding what keeps our community well is the point. &darr;</p>
+      <div class="pband-copy" id="pband-copy">
+        <p>Come early, Oct 9&ndash;11, for the Mx. Pineapple Palm Springs Takeover: the industry&rsquo;s weekend of cabaret, drag, and adult entertainment, and the reason everyone&rsquo;s in the desert.</p>
+        <p>It&rsquo;s a fundraiser for Pineapple Support, the free, 24/7 mental-health and therapy service for people working in the adult industry. <strong>Being here is the fun part; funding what keeps our community well is the point.</strong> &darr;</p>
+      </div>
     </div>
   </div>
 </section>
@@ -613,7 +619,8 @@
       const hi=document.getElementById("hero-intro");
       if(hi && d.intro?.length) hi.innerHTML=d.intro.map(t=>`<p>${t}</p>`).join("");
       const pb=document.getElementById("pband-copy");
-      if(pb && d.highlights?.[0]?.detail?.[0]) pb.innerHTML=d.highlights[0].detail[0];
+      const hl=d.highlights?.[0];
+      if(pb && hl?.detail?.length) pb.innerHTML=hl.detail.map(t=>`<p>${t}</p>`).join("");
     })
     .catch(()=>{ /* content.json absent, sections stay empty, rest of page works */ });
 
