@@ -47,6 +47,8 @@ const PROP = {
   name:        "Name",
   status:      "Status",
   headshot:    "Headshot",
+  headshotUrl: "Headshot URL",   // imported ballot headshots are external links
+  votes:       "Votes",          // orders the invited pool; never published
   instagram:   "Instagram",
   x:           "X",
   onlyfans:    "OnlyFans",
@@ -218,7 +220,7 @@ async function saveImage(url, key) {
 
 async function downloadHeadshot(page) {
   const files = readProp(page.properties, PROP.headshot);
-  const url = Array.isArray(files) ? files[0] : files;
+  const url = (Array.isArray(files) ? files[0] : files) || readProp(page.properties, PROP.headshotUrl) || "";
   return saveImage(url, page.id.replace(/-/g, ""));
 }
 
@@ -228,100 +230,48 @@ if (CHECK) { console.log("\n--check: nothing written."); process.exit(clean ? 0 
 if (!clean) { console.error("\nRefusing to build with unmatched property names. Fix PROP above."); process.exit(1); }
 
 const pages = await fetchAll();
-const booked = pages.filter(p => {
-  const s = (readProp(p.properties, PROP.status) ?? "").toString().toLowerCase();
-  return s === BOOKED;
-});
-console.log(`\n${pages.length} rows in the database, ${booked.length} with status "${process.env.BOOKED_STATUS || "Booked"}".`);
+const statusOf = p => (readProp(p.properties, PROP.status) ?? "").toString().trim().toLowerCase();
+const nameOf   = p => readProp(p.properties, PROP.name) || "";
 
-const roster = [];
-for (const page of booked) {
+// Status is the single switch: Booked shows in "Who's in the house",
+// Invited and Interested feed the "Have a buddy?" pool, anything else is off
+// the site entirely.
+const booked  = pages.filter(p => statusOf(p) === BOOKED);
+const pool    = pages.filter(p => ["invited", "interested"].includes(statusOf(p)));
+console.log(`\n${pages.length} rows: ${booked.length} booked, ${pool.length} in the invited pool.`);
+
+async function entry(page) {
   const f = page.properties;
-  roster.push({
-    name:     readProp(f, PROP.name) || "",
+  return {
+    name:     nameOf(page),
     headshot: await downloadHeadshot(page),
-    ig:  profileUrl(readProp(f, PROP.instagram), "https://instagram.com/"), // text -> URL
-    x:   profileUrl(readProp(f, PROP.x),         "https://x.com/"),         // text -> URL
-    of:  asUrl(readProp(f, PROP.onlyfans)),                                 // URL as typed
-    jff: asUrl(readProp(f, PROP.justforfans)),                              // URL as typed
-  });
+    ig:  profileUrl(readProp(f, PROP.instagram), "https://instagram.com/"),
+    x:   profileUrl(readProp(f, PROP.x),         "https://x.com/"),
+    of:  asUrl(readProp(f, PROP.onlyfans)),
+    jff: asUrl(readProp(f, PROP.justforfans)),
+  };
 }
 
+// ---- roster.json: the booked house ----
+const roster = [];
+for (const page of booked) roster.push(await entry(page));
 await writeFile(OUT_JSON, JSON.stringify(roster, null, 2));
 console.log(`Wrote ${OUT_JSON} with ${roster.length} performers.`);
 const noShot = roster.filter(r => !r.headshot).length;
-if (noShot) console.log(`Note: ${noShot} have no headshot — the site shows their initials in the gradient ring until one is added.`);
+if (noShot) console.log(`Note: ${noShot} have no headshot, so the site shows their initials in the gradient ring.`);
 
-// ===========================================================================
-// INVITED GRID  ->  invited.json
-// ---------------------------------------------------------------------------
-// Reads the Notion "Invited (ballot)" database, seeded once from the Airtable
-// ballot. Keeping it in Notion means the build needs no Airtable credentials
-// and admins curate invitees in the same place as everything else.
-//
-// Votes set the order and are deliberately NOT published. Untick Include in
-// Notion to drop someone from the site.
-// ===========================================================================
-const INVITED_DB  = process.env.NOTION_INVITED_DB_ID;
+// ---- invited.json: the pool, ordered here so the front-end just renders ----
+// Interested outranks the whole voted pool: they have raised their hand, which
+// counts for more than a ballot score. Votes order the rest and are never
+// published; name breaks ties so builds are deterministic.
 const OUT_INVITED = "invited.json";
+const rank = p => (statusOf(p) === "interested" ? 0 : 1);
+const sorted = pool
+  .map(p => ({ page: p, rank: rank(p), votes: Number(readProp(p.properties, PROP.votes)) || 0, name: nameOf(p) }))
+  .sort((a, b) => a.rank - b.rank || b.votes - a.votes || a.name.localeCompare(b.name));
 
-async function buildInvited(bookedNames) {
-  const norm = s => (s ?? "").toString().trim().replace(/\s+/g, " ").toLowerCase();
-  const empty = async (msg) => {
-    console.log(`\n${msg}`);
-    await writeFile(OUT_INVITED, JSON.stringify({ count: 0, invited: [] }, null, 2));
-  };
-  if (!INVITED_DB) return empty(`No NOTION_INVITED_DB_ID, skipping the invited grid.`);
-
-  let pages = [];
-  try {
-    let cursor;
-    do {
-      const body = { page_size: 100, ...(cursor ? { start_cursor: cursor } : {}) };
-      const r = await fetch(`https://api.notion.com/v1/databases/${INVITED_DB}/query`,
-        { method: "POST", headers: HDR, body: JSON.stringify(body) });
-      if (!r.ok) throw new Error(`Notion ${r.status}: ${(await r.json()).message}`);
-      const d = await r.json(); pages.push(...d.results); cursor = d.has_more ? d.next_cursor : null;
-    } while (cursor);
-  } catch (e) {
-    return empty(`Invited grid skipped: ${e.message}`);   // never fail the site build
-  }
-
-  // Booked performers headline "Who's in the house"; repeating them here reads
-  // as noise, so they are excluded from the invited grid.
-  const booked = new Set((bookedNames || []).map(norm));
-  let skippedBooked = 0, excluded = 0;
-  const picked = [];
-  for (const pg of pages) {
-    const f = pg.properties;
-    const name = readProp(f, "Name") || "";
-    if (!name) continue;
-    if (f.Include && readProp(f, "Include") === false) { excluded++; continue; }
-    const votes = Number(readProp(f, "Votes")) || 0;
-    if (votes < 1) continue;
-    if (booked.has(norm(name))) { skippedBooked++; continue; }
-    picked.push({ id: pg.id.replace(/-/g, ""), name, votes,
-      shot: readProp(f, "Headshot") || "",
-      ig:  readProp(f, "Instagram"), x: readProp(f, "X"),
-      of:  readProp(f, "OnlyFans"),  jff: readProp(f, "JustForFans") });
-  }
-
-  // most votes first; name A-Z breaks ties so builds are deterministic
-  picked.sort((a, b) => b.votes - a.votes || a.name.localeCompare(b.name));
-
-  const out = [];
-  for (const p of picked) {
-    out.push({
-      name: p.name,
-      headshot: await saveImage(p.shot, `inv-${p.id}`),
-      ig:  profileUrl(p.ig, "https://instagram.com/"),
-      x:   profileUrl(p.x,  "https://x.com/"),
-      of:  asUrl(p.of),
-      jff: asUrl(p.jff),
-    });
-  }
-  await writeFile(OUT_INVITED, JSON.stringify({ count: out.length, invited: out }, null, 2));
-  console.log(`\nWrote ${OUT_INVITED}: ${out.length} invited (${skippedBooked} already booked, ${excluded} excluded in Notion).`);
-}
-
-await buildInvited(roster.map(r => r.name));
+const invited = [];
+for (const s of sorted) invited.push(await entry(s.page));
+await writeFile(OUT_INVITED, JSON.stringify({ count: invited.length, invited }, null, 2));
+const interested = sorted.filter(s => s.rank === 0).length;
+console.log(`Wrote ${OUT_INVITED}: ${invited.length} in the pool (${interested} interested pinned to the top).`);

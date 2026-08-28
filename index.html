@@ -289,13 +289,23 @@
     background:linear-gradient(180deg,rgba(7,8,14,0),var(--bg) 84%)}
   .buddy-wrap.open .buddy-scrim{display:none}
   .buddy-actions{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:20px}
-  .buddy-actions .btn.ghost{background:transparent;border:1px solid var(--line);
+  .btn.ghost{background:transparent;border:1px solid var(--line);
     color:var(--ink);box-shadow:none;font-size:16px;padding:12px 26px;cursor:pointer}
-  .buddy-actions .btn.ghost:hover{border-color:var(--cyan);filter:none}
-  .buddy-cta{color:var(--muted);font-size:14px;text-decoration:none;
+  .btn.ghost:hover{border-color:var(--cyan);filter:none}
+  .buddy-cta{color:var(--muted);font-size:14px;text-decoration:none;background:none;border:0;cursor:pointer;font-family:inherit;padding:0;
     border-bottom:1px solid transparent;transition:color .15s,border-color .15s}
   .buddy-cta:hover{color:var(--cyan);border-color:var(--cyan)}
   @media(prefers-reduced-motion:reduce){.buddy-wrap{transition:none}}
+  /* suggest-a-creator dialog */
+  .suggest-modal{border:1px solid var(--line);border-radius:18px;padding:clamp(26px,4vw,38px);
+    background:var(--card);color:var(--ink);max-width:440px;width:calc(100% - 32px);text-align:center}
+  .suggest-modal::backdrop{background:rgba(4,5,10,.72);backdrop-filter:blur(6px)}
+  .suggest-modal .sm-eyebrow{margin:0 0 10px;font-family:"Inter";font-weight:700;font-size:11px;
+    letter-spacing:.2em;text-transform:uppercase;color:var(--muted-2)}
+  .suggest-modal .sm-text{margin:0 0 22px;font-family:"Saira Condensed",sans-serif;font-weight:800;
+    font-style:italic;text-transform:uppercase;font-size:clamp(20px,3vw,28px);line-height:1.25}
+  .suggest-modal .sm-text a{color:var(--cyan);text-decoration:none;white-space:nowrap}
+  .suggest-modal .sm-text a:hover{text-decoration:underline}
 
   /* ---------- CTA ---------- */
   /* the CTA sits between two sections, keep it tight so it reads as a break, not a gap */
@@ -466,8 +476,13 @@
     </div>
     <div class="buddy-actions">
       <button class="btn ghost" id="buddy-toggle" type="button" aria-expanded="false" aria-controls="buddy-wrap"></button>
-      <a class="buddy-cta" id="buddy-suggest" href="#">Someone missing? Suggest a creator &rarr;</a>
+      <button class="buddy-cta" id="buddy-suggest" type="button">Someone missing? Suggest a creator &rarr;</button>
     </div>
+    <dialog class="suggest-modal" id="suggest-modal">
+      <p class="sm-eyebrow">Suggest a creator</p>
+      <p class="sm-text">Text Sean Xavier at <a href="tel:+12026745387">202-674-5387</a></p>
+      <button class="btn ghost" id="suggest-close" type="button">Close</button>
+    </dialog>
   </div>
 </section>
 
@@ -748,8 +763,15 @@
       btn.addEventListener("click",toggle);
       scrim.addEventListener("click",toggle);
       label();
-      const sug=document.getElementById("buddy-suggest");
-      if(INTEREST_FORM_URL){ sug.href=INTEREST_FORM_URL; sug.target="_blank"; sug.rel="noopener"; }
+      // "Suggest a creator" opens a small dialog rather than a form
+      const sug=document.getElementById("buddy-suggest"),
+            modal=document.getElementById("suggest-modal");
+      if(sug && modal){
+        sug.addEventListener("click",()=>modal.showModal?.() ?? (modal.open=true));
+        document.getElementById("suggest-close").addEventListener("click",()=>modal.close());
+        // click outside the panel closes it; Esc is native to <dialog>
+        modal.addEventListener("click",e=>{ if(e.target===modal) modal.close(); });
+      }
     })
     .catch(()=>{ /* no invited.json, section stays hidden */ });
 
