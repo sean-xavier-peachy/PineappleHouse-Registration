@@ -69,6 +69,27 @@
   .xmark{width:clamp(52px,9vw,92px);flex:none;filter:drop-shadow(0 0 18px rgba(162,77,255,.45))}
 
   /* ---------- PHOTO GRID ---------- */
+  /* ---------- STAT PILL — same treatment in carousel, CTA and dock ---------- */
+  .stat-pill{
+    display:inline-flex;align-items:center;gap:9px;white-space:nowrap;
+    font-family:"Saira Condensed",sans-serif;font-weight:800;font-style:italic;
+    text-transform:uppercase;letter-spacing:.03em;line-height:1;color:var(--ink);
+    font-size:clamp(15px,1.7vw,21px);padding:11px 20px;border-radius:999px;
+    background:rgba(7,8,14,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border:1px solid var(--line);
+  }
+  .stat-pill .sep{color:var(--cyan);opacity:.9;font-weight:700}
+  /* 1 · pinned to the bottom of the carousel, clear of the dots */
+  .car-badge{position:absolute;left:50%;transform:translateX(-50%);z-index:4;
+    bottom:calc(21px + 16px);pointer-events:none}
+  /* 2 · under the CTA headline */
+  .cta .stat-pill{margin-top:16px}
+  /* 3 · left of the dock button */
+  .dock-right{display:flex;align-items:center;gap:14px;flex:none}
+  .dock-right .stat-pill{padding:9px 16px;font-size:15px}
+  @media(max-width:820px){ .dock-right .stat-pill{display:none} }
+  @media(max-width:560px){ .car-badge .stat-pill{font-size:13px;padding:9px 14px} }
+
   /* ---------- STICKY FOOTER CTA DOCK ---------- */
   .cta-dock{
     position:fixed;left:0;right:0;bottom:0;z-index:70;
@@ -282,6 +303,7 @@
       </div>
       <button class="car-nav prev" id="car-prev" type="button" aria-label="Previous photo">&#8249;</button>
       <button class="car-nav next" id="car-next" type="button" aria-label="Next photo">&#8250;</button>
+      <div class="car-badge"><span class="stat-pill">4&nbsp;Nights <span class="sep">|</span> Starting at $700</span></div>
       <div class="car-dots" id="car-dots"></div>
     </div>
 
@@ -309,6 +331,7 @@
   <div class="wrap">
     <div class="cta">
       <h2>Let's put you <span class="accent-cyan">in the house</span></h2>
+      <span class="stat-pill">4&nbsp;Nights <span class="sep">|</span> Starting at $700</span>
       <p>Tell us you're interested and how to reach you. To lock a spot, reach out and place your 50% deposit — once it clears, your headshot goes up on the roster.</p>
       <a class="btn" id="interest-cta" href="#" aria-disabled="true">Claim your spot</a>
       <p class="fine">Interest form · booking &amp; deposit handled directly with the Ducati team</p>
@@ -347,7 +370,10 @@
   <div class="wrap">
     <div class="dock-row">
       <span class="dock-title">Let's put you <span class="accent-cyan">in the house</span></span>
-      <a class="btn" id="dock-cta" href="#" aria-disabled="true">Claim your spot</a>
+      <div class="dock-right">
+        <span class="stat-pill">4&nbsp;Nights <span class="sep">|</span> Starting at $700</span>
+        <a class="btn" id="dock-cta" href="#" aria-disabled="true">Claim your spot</a>
+      </div>
     </div>
   </div>
 </div>
