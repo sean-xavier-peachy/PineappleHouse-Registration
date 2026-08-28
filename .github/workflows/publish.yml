@@ -54,6 +54,7 @@ jobs:
           mkdir -p _site
           cp index.html content.json _site/
           [ -f invited.json ] && cp invited.json _site/ || true
+          [ -f rooms.json ] && cp rooms.json _site/ || true
           [ -f roster.json ] && cp roster.json _site/ || true
           [ -d assets ] && cp -r assets _site/ || true
           ls -la _site

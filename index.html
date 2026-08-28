@@ -231,6 +231,11 @@
   .tier .price{font-family:"Saira Condensed";font-weight:800;font-size:44px;line-height:1;margin:10px 0 4px}
   .tier .price small{font-size:15px;color:var(--muted);font-weight:600}
   .tier .bed{color:var(--muted);font-size:14px}
+  .tier .beds{margin-top:7px;color:var(--cyan);font-size:13.5px;font-weight:600;letter-spacing:.02em}
+  .tier.sold-out{opacity:.42}
+  .tier .sold-tag{display:inline-block;margin-top:8px;padding:4px 11px;border-radius:999px;
+    background:rgba(255,46,120,.14);border:1px solid var(--magenta);color:var(--magenta);
+    font-family:"Inter";font-weight:700;font-size:10px;letter-spacing:.18em;text-transform:uppercase}
 
   /* ---------- INFO CARDS ---------- */
   .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
@@ -656,6 +661,7 @@
     "https://a0.muscache.com/im/pictures/hosting/Hosting-608249209140004413/original/7616dac1-3cb0-4e23-87e0-d63b4750c0c2.jpeg?im_w=1200"
   ];
   const CAP_ALT=["", "p"]; // alternate cyan / purple card caps
+  let ROOMS=new Map();     // price -> { capacity, taken, available, soldOut }
 
   function itemHTML(it){
     if(it.type==="note") return `<li class="note-li">${it.html}</li>`;
@@ -670,12 +676,18 @@
            `<ul>${g.items.map(itemHTML).join("")}</ul></div>`;
   }
   function tiersHTML(tiers){
-    return `<div class="tiers" style="margin-top:26px">`+tiers.map((t,i)=>
-      `<div class="tier${i===0?" feat":""}">`+
-      (TIER_SHOTS[i]?`<img class="rm-shot" src="${TIER_SHOTS[i]}" alt="${t.label}" loading="lazy">`:"")+
-      `<div class="inner"><div class="rooms">${t.label}</div>`+
-      `<div class="price">${t.price}<small>/head</small></div>`+
-      `<div class="bed">${t.bed}</div></div></div>`).join("")+`</div>`;
+    return `<div class="tiers" style="margin-top:26px">`+tiers.map((t,i)=>{
+      const r=ROOMS.get(t.price);
+      // availability comes from the build; the card just reflects it
+      const avail = !r ? ""
+        : r.soldOut ? `<div class="sold-tag">Sold out</div>`
+        : `<div class="beds">${r.available} bed${r.available===1?"":"s"} available</div>`;
+      return `<div class="tier${i===0?" feat":""}${r&&r.soldOut?" sold-out":""}">`+
+        (TIER_SHOTS[i]?`<img class="rm-shot" src="${TIER_SHOTS[i]}" alt="${t.label}" loading="lazy">`:"")+
+        `<div class="inner"><div class="rooms">${t.label}</div>`+
+        `<div class="price">${t.price}<small>/head</small></div>`+
+        `<div class="bed">${t.bed}</div>${avail}</div></div>`;
+    }).join("")+`</div>`;
   }
   function sectionHTML(s,idx,tiers){
     const n=String(idx).padStart(2,"0");
@@ -692,9 +704,13 @@
     return `<section id="sec-${idx}" style="padding-top:0"><div class="wrap">${inner}</div></section>`;
   }
 
-  fetch("content.json",{cache:"no-store"})
-    .then(r=>r.ok?r.json():Promise.reject())
-    .then(d=>{
+  Promise.all([
+    fetch("content.json",{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject()),
+    // bed availability is optional: without it the tiers simply omit the line
+    fetch("rooms.json",{cache:"no-store"}).then(r=>r.ok?r.json():{rooms:[]}).catch(()=>({rooms:[]})),
+  ])
+    .then(([d,rd])=>{
+      ROOMS=new Map((rd.rooms||[]).map(r=>[r.price,r]));
       const secs=d.sections||[];
       if(!secs.length) return;
       const s01=document.getElementById("sec-01"),

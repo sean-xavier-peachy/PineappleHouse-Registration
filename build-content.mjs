@@ -139,7 +139,10 @@ if (rooms){
   doc.tiers=[...byPrice.values()].map(t=>{
     const n=t.rooms.map(r=>r.replace(/^Bedroom\s*/,""));
     const label = n.length===1 ? `Bedroom ${n[0]}` : `Bedrooms ${n[0]}–${n[n.length-1]}`;
-    return { label, price:t.price, bed:`${t.bed} · sleeps ${t.sleeps}${t.rooms.length>1?" each":""}` };
+    // beds in the tier = rooms x sleeps, so the table stays the source of truth
+    const capacity = t.rooms.length * (parseInt(t.sleeps, 10) || 0);
+    return { label, price:t.price, capacity,
+             bed:`${t.bed} · sleeps ${t.sleeps}${t.rooms.length>1?" each":""}` };
   });
 }
 

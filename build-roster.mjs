@@ -48,6 +48,7 @@ const PROP = {
   status:      "Status",
   headshot:    "Headshot",
   headshotUrl: "Headshot URL",   // imported ballot headshots are external links
+  room:        "Room preference",// which bed a booked performer occupies
   votes:       "Votes",          // orders the invited pool; never published
   instagram:   "Instagram",
   x:           "X",
@@ -259,6 +260,47 @@ await writeFile(OUT_JSON, JSON.stringify(roster, null, 2));
 console.log(`Wrote ${OUT_JSON} with ${roster.length} performers.`);
 const noShot = roster.filter(r => !r.headshot).length;
 if (noShot) console.log(`Note: ${noShot} have no headshot, so the site shows their initials in the gradient ring.`);
+
+// ---- rooms.json: bed availability per tier ----
+// Capacity comes from the room table in the Notion guide (rooms x sleeps) via
+// content.json, so the table stays the single source of truth for the house.
+// A bed is counted as taken when a BOOKED performer has a room set; Interested
+// and Deposit pending do not hold a bed.
+const OUT_ROOMS = "rooms.json";
+try {
+  const { readFile } = await import("node:fs/promises");
+  const content = JSON.parse(await readFile("content.json", "utf8"));
+  const tiers = content.tiers || [];
+  if (!tiers.length) throw new Error("content.json has no tiers");
+
+  // Room preference labels carry the price ("Primary King - $900"), which is
+  // also the tier key, so tiers and rooms match on price rather than wording.
+  const priceOf = s => (String(s).match(/\$[\d,]+/) || [])[0] || "";
+  const taken = new Map();
+  let unassigned = 0, unmatched = [];
+  for (const p of booked) {
+    const room = readProp(p.properties, PROP.room);
+    if (!room) { unassigned++; continue; }
+    const key = priceOf(room);
+    if (!key || !tiers.some(t => t.price === key)) { unmatched.push(room); continue; }
+    taken.set(key, (taken.get(key) || 0) + 1);
+  }
+  if (unassigned) console.log(`  ${unassigned} booked performer(s) have no room set yet.`);
+  if (unmatched.length) console.warn(`  ! room value(s) match no tier price: ${[...new Set(unmatched)].join(", ")}`);
+
+  const rooms = tiers.map(t => {
+    const used = taken.get(t.price) || 0;
+    const available = Math.max(0, (t.capacity || 0) - used);
+    return { price: t.price, capacity: t.capacity || 0, taken: used, available, soldOut: available === 0 };
+  });
+  await writeFile(OUT_ROOMS, JSON.stringify({ rooms }, null, 2));
+  const free = rooms.reduce((a, r) => a + r.available, 0);
+  console.log(`Wrote ${OUT_ROOMS}: ${free} of ${rooms.reduce((a,r)=>a+r.capacity,0)} beds available.`);
+} catch (e) {
+  // Without content.json the site still renders tiers, just with no bed counts.
+  console.warn(`Room availability skipped: ${e.message}`);
+  await writeFile(OUT_ROOMS, JSON.stringify({ rooms: [] }, null, 2));
+}
 
 // ---- invited.json: the pool, ordered here so the front-end just renders ----
 // Interested outranks the whole voted pool: they have raised their hand, which
