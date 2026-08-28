@@ -197,6 +197,10 @@
   .who.tbd .nm{color:var(--muted)}
 
   /* ---------- CTA ---------- */
+  /* the CTA sits between two sections — keep it tight so it reads as a break, not a gap */
+  #claim{padding-block:clamp(14px,2vw,26px)}
+  #claim .cta{padding:clamp(22px,3.4vw,38px)}
+  #claim .cta p{margin:12px auto 22px}
   .cta{background:linear-gradient(180deg,var(--bg-2),var(--bg));border:1px solid var(--line);border-radius:20px;
     padding:clamp(30px,5vw,54px);text-align:center;position:relative;overflow:hidden}
   .cta::before{content:"";position:absolute;inset:0;background:radial-gradient(50% 120% at 50% 0%,rgba(38,228,242,.14),transparent 70%)}
@@ -291,6 +295,12 @@
   </div>
 </header>
 
+
+
+<!-- ===== 01/02 · rendered from Notion (build-content.mjs) ===== -->
+<!-- 01 · Rooms & buy-in -->
+<div id="sec-01"></div>
+
 <!-- ===================== CTA ===================== -->
 <section id="claim">
   <div class="wrap">
@@ -303,9 +313,8 @@
   </div>
 </section>
 
-
-<!-- ===== 01/02 · rendered from Notion (build-content.mjs) ===== -->
-<div id="sec-pre"></div>
+<!-- 02 · What's included -->
+<div id="sec-02"></div>
 
 
 <!-- ===================== WHO'S IN THE HOUSE ===================== -->
@@ -498,13 +507,16 @@
     .then(d=>{
       const secs=d.sections||[];
       if(!secs.length) return;
-      const pre=document.getElementById("sec-pre"),
+      const s01=document.getElementById("sec-01"),
+            s02=document.getElementById("sec-02"),
             post=document.getElementById("sec-post"),
             tail=document.getElementById("sec-tail");
-      // 01-02 before the roster, 04-07 after it, the last section after the CTA
-      const head=secs.slice(0,2), mid=secs.slice(2,-1), last=secs[secs.length-1];
+      // 01, then the CTA, then 02; 04-07 after the roster; the last section at the end
+      const mid=secs.slice(2,-1), last=secs[secs.length-1];
       let n=0;
-      pre.innerHTML  = head.map(s=>sectionHTML(s,++n,s.table?d.tiers:null)).join("");
+      const put=(el,sec)=>{ if(el&&sec) el.innerHTML=sectionHTML(sec,++n,sec.table?d.tiers:null); };
+      put(s01,secs[0]);
+      put(s02,secs[1]);
       n++; // 03 is the roster, which is static markup
       post.innerHTML = mid.map(s=>sectionHTML(s,++n,null)).join("");
       tail.innerHTML = sectionHTML(last,++n,null);
