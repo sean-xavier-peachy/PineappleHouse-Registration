@@ -310,6 +310,12 @@
     letter-spacing:.2em;text-transform:uppercase;color:var(--muted-2)}
   .suggest-modal .sm-text{margin:0 0 22px;font-family:"Saira Condensed",sans-serif;font-weight:800;
     font-style:italic;text-transform:uppercase;font-size:clamp(20px,3vw,28px);line-height:1.25}
+  .suggest-modal .share-msg{
+    margin:0 0 20px;padding:16px 18px;border-radius:12px;text-align:left;
+    background:var(--bg-2);border:1px solid var(--line);
+    color:#cfd3e4;font-size:14px;line-height:1.6;word-break:break-word}
+  .share-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .share-actions .btn{font-size:15px;padding:11px 22px;cursor:pointer}
   .suggest-modal .sm-note{margin:0 0 22px;color:var(--muted);font-size:14px;line-height:1.6}
   .suggest-modal .sm-text{margin-bottom:10px}
 
@@ -486,9 +492,13 @@
     </div>
     <dialog class="suggest-modal" id="suggest-modal">
       <p class="sm-eyebrow">Suggest a creator</p>
-      <p class="sm-text">The suggestion form is not live yet</p>
-      <p class="sm-note">Check back shortly, or mention them to any of the Ducati team.</p>
-      <button class="btn ghost" id="suggest-close" type="button">Close</button>
+      <p class="sm-text">Send them the house</p>
+      <p class="sm-note">Know someone who belongs here? Text them this. If they put their name in, we will take it from there.</p>
+      <p class="share-msg" id="share-msg"></p>
+      <div class="share-actions">
+        <button class="btn" id="share-copy" type="button">Copy message</button>
+        <button class="btn ghost" id="suggest-close" type="button">Close</button>
+      </div>
     </dialog>
   </div>
 </section>
@@ -531,10 +541,13 @@
   //    A workspace "Copy link" URL will NOT work, models would hit a login wall.
   const INTEREST_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScCk1oH5w7DM58IOpWooFOt5xbRskqnrfY3UdogankhaGeA4w/viewform";
 
-  // 1b) SUGGEST FORM: same form as the interest CTA. It captures the creator
-  //     in Name and the person putting them forward in Referred by, so one
-  //     form serves both "sign me up" and "you should invite them".
-  const SUGGEST_FORM_URL = INTEREST_FORM_URL;
+  // 1b) SHARE: "Suggest a creator" opens a modal with a ready to send message.
+  //     Referrals happen creator to creator, so the ask is a text, not a form.
+  const SITE_URL = "https://sean-xavier-peachy.github.io/PineappleHouse-Registration/";
+  const SHARE_MESSAGE =
+    "You should be in this house. Ducati X collab house in Palm Springs, " +
+    "Oct 12 to 16. Closed set, chef on site, 16 creators. " +
+    "Take a look and put your name in: " + SITE_URL;
 
   // 2) ROSTER: the page renders whatever is in roster.json, which is generated from the
   //    Notion Models DB at BUILD time (see build-roster.mjs). Change someone's Status away
@@ -786,18 +799,27 @@
       btn.addEventListener("click",toggle);
       scrim.addEventListener("click",toggle);
       label();
-      // "Suggest a creator" goes straight to the form once it exists; until
-      // then the dialog says so rather than dead-ending on a broken link.
+      // "Suggest a creator" opens a share modal with a ready to send message
       const sug=document.getElementById("buddy-suggest"),
-            modal=document.getElementById("suggest-modal");
+            modal=document.getElementById("suggest-modal"),
+            msgEl=document.getElementById("share-msg"),
+            copyBtn=document.getElementById("share-copy");
       if(sug && modal){
-        sug.addEventListener("click",()=>{
-          if(SUGGEST_FORM_URL){ window.open(SUGGEST_FORM_URL,"_blank","noopener"); return; }
-          modal.showModal?.() ?? (modal.open=true);
-        });
+        if(msgEl) msgEl.textContent=SHARE_MESSAGE;
+        sug.addEventListener("click",()=>modal.showModal?.() ?? (modal.open=true));
         document.getElementById("suggest-close").addEventListener("click",()=>modal.close());
-        // click outside the panel closes it; Esc is native to <dialog>
         modal.addEventListener("click",e=>{ if(e.target===modal) modal.close(); });
+        if(copyBtn) copyBtn.addEventListener("click",async ()=>{
+          try{
+            await navigator.clipboard.writeText(SHARE_MESSAGE);
+          }catch(err){
+            // clipboard API needs a secure context, so fall back to selecting
+            const r=document.createRange(); r.selectNodeContents(msgEl);
+            const sel=getSelection(); sel.removeAllRanges(); sel.addRange(r);
+          }
+          copyBtn.textContent="Copied";
+          setTimeout(()=>copyBtn.textContent="Copy message",1800);
+        });
       }
     })
     .catch(()=>{ /* no invited.json, section stays hidden */ });
