@@ -48,7 +48,8 @@ const PROP = {
   status:      "Status",
   headshot:    "Headshot",
   headshotUrl: "Headshot URL",   // imported ballot headshots are external links
-  room:        "Room preference",// which bed a booked performer occupies
+  // NOTE: "Room preference" is an internal planning field, not an assignment.
+  // Real bed assignments live in the Rooming Roster database.
   votes:       "Votes",          // orders the invited pool; never published
   instagram:   "Instagram",
   x:           "X",
@@ -266,27 +267,39 @@ if (noShot) console.log(`Note: ${noShot} have no headshot, so the site shows the
 // content.json, so the table stays the single source of truth for the house.
 // A bed is counted as taken when a BOOKED performer has a room set; Interested
 // and Deposit pending do not hold a bed.
-const OUT_ROOMS = "rooms.json";
+const OUT_ROOMS   = "rooms.json";
+const ROOMING_DB  = process.env.NOTION_ROOMING_DB_ID || "";
+const ROOM_OCCUPANT = process.env.ROOMING_OCCUPANT_FIELD || "Model";
+const ROOM_TIER     = process.env.ROOMING_TIER_FIELD     || "Room";
 try {
   const { readFile } = await import("node:fs/promises");
   const content = JSON.parse(await readFile("content.json", "utf8"));
   const tiers = content.tiers || [];
   if (!tiers.length) throw new Error("content.json has no tiers");
 
-  // Room preference labels carry the price ("Primary King - $900"), which is
-  // also the tier key, so tiers and rooms match on price rather than wording.
-  const priceOf = s => (String(s).match(/\$[\d,]+/) || [])[0] || "";
+  // Bed assignments come from the Rooming Roster database, which holds one row
+  // per bed. Until it is shared with the integration we cannot read occupancy,
+  // so every bed reports available rather than guessing from another field.
   const taken = new Map();
-  let unassigned = 0, unmatched = [];
-  for (const p of booked) {
-    const room = readProp(p.properties, PROP.room);
-    if (!room) { unassigned++; continue; }
-    const key = priceOf(room);
-    if (!key || !tiers.some(t => t.price === key)) { unmatched.push(room); continue; }
-    taken.set(key, (taken.get(key) || 0) + 1);
+  if (!ROOMING_DB) {
+    console.log("  Rooming Roster not configured, so all beds report available.");
+  } else {
+    let cursor;
+    do {
+      const r = await fetch(`https://api.notion.com/v1/databases/${ROOMING_DB}/query`,
+        { method: "POST", headers: HDR, body: JSON.stringify({ page_size: 100, ...(cursor ? { start_cursor: cursor } : {}) }) });
+      if (!r.ok) throw new Error(`Rooming Roster ${r.status}: ${(await r.json()).message}`);
+      const d = await r.json();
+      for (const bed of d.results) {
+        // a bed counts as taken when it names an occupant
+        const who = readProp(bed.properties, ROOM_OCCUPANT);
+        if (!who || (Array.isArray(who) && !who.length)) continue;
+        const key = (String(readProp(bed.properties, ROOM_TIER) ?? "").match(/\$[\d,]+/) || [])[0];
+        if (key) taken.set(key, (taken.get(key) || 0) + 1);
+      }
+      cursor = d.has_more ? d.next_cursor : null;
+    } while (cursor);
   }
-  if (unassigned) console.log(`  ${unassigned} booked performer(s) have no room set yet.`);
-  if (unmatched.length) console.warn(`  ! room value(s) match no tier price: ${[...new Set(unmatched)].join(", ")}`);
 
   const rooms = tiers.map(t => {
     const used = taken.get(t.price) || 0;
