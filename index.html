@@ -273,6 +273,9 @@
   #buddies[hidden]{display:none}
   .roster.invited{opacity:.58}
   .roster.invited .avatar{width:94px;height:94px}
+  /* ballot headshots are full-body 2:3 portraits, so a centred cover crop
+     lands on the torso. Bias the window to the top to catch the face. */
+  .roster.invited .avatar img{object-position:50% 10%}
   .roster.invited .who .nm{font-size:17px;margin-top:11px}
   .who .tag-invited{margin-top:6px;font-family:"Inter";font-weight:700;font-size:10px;
     letter-spacing:.18em;text-transform:uppercase;color:var(--muted-2)}
