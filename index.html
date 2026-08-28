@@ -531,9 +531,10 @@
   //    A workspace "Copy link" URL will NOT work, models would hit a login wall.
   const INTEREST_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScCk1oH5w7DM58IOpWooFOt5xbRskqnrfY3UdogankhaGeA4w/viewform";
 
-  // 1b) SUGGEST FORM: the published Notion form for "Suggest a creator".
-  //     Leave empty and the button explains the form is not live yet.
-  const SUGGEST_FORM_URL = "";
+  // 1b) SUGGEST FORM: same form as the interest CTA. It captures the creator
+  //     in Name and the person putting them forward in Referred by, so one
+  //     form serves both "sign me up" and "you should invite them".
+  const SUGGEST_FORM_URL = INTEREST_FORM_URL;
 
   // 2) ROSTER: the page renders whatever is in roster.json, which is generated from the
   //    Notion Models DB at BUILD time (see build-roster.mjs). Change someone's Status away
